@@ -61,17 +61,3 @@ For more information on database concerns, please refer to the [Database Documen
 ## Develop in Branches
 
 Before beginning any feature work, fixes, or other modifications, you should checkout a branch to keep the history separate from the `main` line history until it is ready deploying into production. For students in COMP423, your final project `main` branch is called `stage`. As your projects are deployed separately from production, this is typically referred to as a "Staging" deployment / environment.
-
-## Authorizing Alternate Users
-
-When running in a development environment, it is helpful to be able to switch between authenticated users.
-Our current mechanism for doing so is a special authorization route that only works in development:
-
-Change users route pattern: `http://localhost:1560/auth/as/{onyen}/{pid}`
-
-For reference, here are some mock personas that are installed in the `reset_testing` script from above:
-
-1. Sally Student: <http://localhost:1560/auth/as/sally/111111111>
-2. Amy Ambassador: <http://localhost:1560/auth/as/amy/888888888>
-3. Rhonda Root: <http://localhost:1560/auth/as/rhonda/999999999>
-4. Larry Leader: <http://localhost:1560/auth/as/larry/777777777>
