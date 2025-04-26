@@ -42,7 +42,7 @@ Once the Dev Container begins, open a terminal and complete the following:
    1. `Ctrl+Shift+P` to open the Command Palette
    2. Type "Reload Window" and select the action "Developer: Reload Window"
 3. Create database and reset demo data:
-   1. `python3 -m backend.script.create_database`
+   1. `python3 -m backend.script.create_db`
    2. `python3 -m backend.script.reset_demo`
 4. Start dev server processes using the `honcho` process manager
    1. `honcho start`
