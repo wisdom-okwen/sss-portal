@@ -41,15 +41,13 @@ Once the Dev Container begins, open a terminal and complete the following:
 2. Reload the VS Code Window to ensure plugins are properly loaded:
    1. `Ctrl+Shift+P` to open the Command Palette
    2. Type "Reload Window" and select the action "Developer: Reload Window"
-   3. It's unclear why this step is necessary, but it seems to fix issues with plugins initializing on first build of a DevContainer.
 3. Create database and reset demo data:
    1. `python3 -m backend.script.create_database`
    2. `python3 -m backend.script.reset_demo`
 4. Start dev server processes using the `honcho` process manager
    1. `honcho start`
       1. Wait until you see "frontend.1 | Compiled successfully" emitted from the Angular dev server.
-   2. Open `localhost:1560` in a browser and you should see the XL site running locally in development.
-   3. Try authorizing as Rhonda Root by visiting <http://localhost:1560/auth/as/rhonda/999999999> your browser.
+   2. Open `localhost:1600` in a browser and you should see the XL site running locally in development.
    4. To stop the development servers, press `Ctrl+C` in the terminal running `honcho` and close VSCode.
 
 ## Development Data
@@ -60,4 +58,4 @@ For more information on database concerns, please refer to the [Database Documen
 
 ## Develop in Branches
 
-Before beginning any feature work, fixes, or other modifications, you should checkout a branch to keep the history separate from the `main` line history until it is ready deploying into production. For students in COMP423, your final project `main` branch is called `stage`. As your projects are deployed separately from production, this is typically referred to as a "Staging" deployment / environment.
+Before beginning any feature work, fixes, or other modifications, you should checkout a branch to keep the history separate from the `main` line history until it is ready deploying into production.
