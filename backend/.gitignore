@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-freeze.txt
+requirements.txt # If you generate it from a tool like Poetry or PDM and don't commit it
+
+# FastAPI / Uvicorn / Gunicorn
+*.log
+*.socket
+*.pid
+
+# IDE specific (Python)
+.idea/ # If not already present
+.vscode/ # If not already present
+
+# Coverage
+.coverage
+htmlcov/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
