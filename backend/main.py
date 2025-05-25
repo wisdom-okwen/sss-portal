@@ -19,7 +19,7 @@ Welcome to the **My Fun App** RESTful Application Programming Interface.
 
 # Metadata to improve the usefulness of OpenAPI Docs /docs API Explorer
 app = FastAPI(
-    title="MyFun",
+    title="Senior Secondary School (SSS) Portal",
     version="0.0.1",
     description=description,
     openapi_tags=[
@@ -34,7 +34,7 @@ app.add_middleware(GZipMiddleware)
 
 # Define CORS settings
 origins = [
-    "http://localhost:1532",   # Another example if React is on a different port
+    "http://localhost:1601",   # Another example if React is on a different port
 ]
 
 # Apply CORS middleware

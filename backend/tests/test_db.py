@@ -13,9 +13,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from database import engine, SessionLocal, Base
 from db.models import User
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL must be set for DB tests")
+# DATABASE_URL = os.getenv("DATABASE_URL")
+# if not DATABASE_URL:
+#     raise RuntimeError("DATABASE_URL must be set for DB tests")
 
 @pytest.fixture(scope="module")
 def db_session():
