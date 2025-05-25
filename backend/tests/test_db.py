@@ -43,7 +43,7 @@ def test_create_and_get_user(db_session):
     """
     Insert a User, commit, then fetch by ID and assert fields.
     """
-    user = User(email="alice@example.com", name="Alice")
+    user = User(email="alice@example.com", first_name="Alice", last_name="Brown", password="**********")
     db_session.add(user)
     db_session.commit()
     db_session.refresh(user)
@@ -52,4 +52,4 @@ def test_create_and_get_user(db_session):
     assert fetched is not None
     assert fetched.id == user.id
     assert fetched.email == "alice@example.com"
-    assert fetched.name == "Alice"
+    assert fetched.first_name == "Alice"
