@@ -3,7 +3,7 @@
 import sqlalchemy
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from env import getenv
+from .env import getenv
 
 
 def _engine_str(database: str = getenv("POSTGRES_DATABASE")) -> str:
