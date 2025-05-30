@@ -6,24 +6,23 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
+
 from .api import (
-    # user,
+    user,
     static_files,
-    # post,
-    # google_auth
 )
 
 description = """
-Welcome to the **My Fun App** RESTful Application Programming Interface.
+Welcome to the **Secondary School Portal** RESTful Application Programming Interface.
 """
 
 # Metadata to improve the usefulness of OpenAPI Docs /docs API Explorer
 app = FastAPI(
-    title="MyFun",
+    title="Senior Secondary School (SSS) Portal",
     version="0.0.1",
     description=description,
     openapi_tags=[
-        # user.openapi_tags,
+        user.openapi_tags,
         # post.openapi_tags,
         # google_auth.openapi_tags
     ],
@@ -34,7 +33,7 @@ app.add_middleware(GZipMiddleware)
 
 # Define CORS settings
 origins = [
-    "http://localhost:1532",   # Another example if React is on a different port
+    "http://localhost:1601",   # Another example if React is on a different port
 ]
 
 # Apply CORS middleware
@@ -48,8 +47,7 @@ app.add_middleware(
 
 
 # Plugging in each of the router APIs
-# feature_apis = [user, post, google_auth]
-feature_apis = []
+feature_apis = [user]
 
 for feature_api in feature_apis:
     app.include_router(feature_api.api)

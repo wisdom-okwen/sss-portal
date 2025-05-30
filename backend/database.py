@@ -1,7 +1,8 @@
 """SQLAlchemy DB Engine and Session niceties for FastAPI dependency injection."""
 
 import sqlalchemy
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from .env import getenv
 
 
@@ -26,3 +27,6 @@ def db_session():
         yield session
     finally:
         session.close()
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()

@@ -27,7 +27,11 @@ def _engine_str() -> str:
     return f"{dialect}://{user}:{password}@{host}:{port}"
 
 
-engine = sqlalchemy.create_engine(_engine_str(), echo=True)
+engine = sqlalchemy.create_engine(
+    _engine_str(),
+    connect_args={"client_encoding": "utf8"},
+    echo=True
+)
 """Application-level SQLAlchemy database engine."""
 
 
