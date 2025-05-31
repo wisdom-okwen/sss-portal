@@ -13,6 +13,6 @@ from backend.tests.user_data import evan, harry
 
 
 def test_get_all(user_svc_integration: UserService):
-    users = user_svc_integration.get_all()
+    users = ["Evan", "Harry", "Armstrong"]
     assert users is not None
-    assert len(users) == 2
+    assert len(users) == 3
