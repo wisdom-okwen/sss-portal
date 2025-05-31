@@ -17,7 +17,6 @@ class UserEntity(EntityBase):
     email: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, default="")
     password: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     user_type: Mapped[UserType] = mapped_column(Enum(UserType), nullable=False, default=UserType.other)
-
     
 
     def to_model(self) -> User:

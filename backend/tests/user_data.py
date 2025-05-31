@@ -12,6 +12,7 @@ from .reset_table_id_sequence import reset_table_id_seq
 from ..utility.shared_enum import UserType
 
 
+
 evan = User(
     id=1,
     first_name="Evan",
