@@ -1,12 +1,15 @@
 from fastapi import APIRouter, Depends
 from ..services.user import UserService
 from ..models.user import User
+from ..utility.shared_enum import UserType
+
 
 api = APIRouter(prefix='/api/users')
 openapi_tags = {
     "name": "Users",
     "description": "User profile search and related operations."
 }
+
 
 @api.get('', response_model=list[User], tags=["Users"])
 def get_users(
@@ -22,6 +25,24 @@ def get_users(
         list[User]: All `User`s in the user table
     """
     return user_service.get_all()
+
+
+@api.get('/by_user_type{user_type}', response_model=list[User], tags=["Users"])
+def get_by_user_type(
+    user_type: UserType,
+    user_service: UserService = Depends()
+) -> list[User]:
+    """
+    Get all users of a particular type
+
+    Parameters:
+        user_service: a valid UserService
+        user_type: type of user
+
+    Returns:
+        list[User]: All `User`s in the user table of user_type
+    """
+    return user_service.get_users_by_type(user_type)
 
 
 @api.get('/{user_id}', response_model=User, tags=["Users"])

@@ -1,5 +1,5 @@
 from fastapi import Depends
-from sqlalchemy import select
+from sqlalchemy import Enum, select
 from sqlalchemy.orm import Session
 
 from ..utility.security import hash_password
@@ -7,6 +7,7 @@ from ..models.user import User
 from ..database import db_session
 from ..entities.user import UserEntity
 from .exceptions import UserPermissionException, ResourceNotFoundException
+from ..utility.shared_enum import UserType
 
 
 class UserService:
@@ -57,6 +58,12 @@ class UserService:
         
         return user.to_model()
 
+
+    def get_users_by_type(self, user_type: UserType) -> User:
+        """Get all users with user_type of student."""
+        query = select(UserEntity).where(UserEntity.user_type == user_type)
+        students = self._session.scalars(query).all()
+        return [student.to_model() for student in students]
 
 
     def add_user(self, user: User) -> User:

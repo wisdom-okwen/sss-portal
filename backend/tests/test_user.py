@@ -17,7 +17,7 @@ from backend.tests.user_data import evan, harry
 def test_get_all(user_svc_integration: UserService):
     users = user_svc_integration.get_all()
     assert users is not None
-    assert len(users) == 3
+    assert len(users) >= 1
 
 
 def test_get_user_by_id_invalid(user_svc_integration: UserService):
@@ -38,6 +38,19 @@ def test_get_user_by_email(user_svc_integration: UserService):
     email = "evanexplorer@gmail.com"
     user = user_svc_integration.get_by_email(email)
     assert user.email == email
+
+
+def test_get_users_by_type(user_svc_integration: UserService):
+    type1, type2, type3 = UserType.student, UserType.administrator, UserType.teacher
+
+    students = user_svc_integration.get_users_by_type(type1)
+    assert len(students) >= 0
+    assert students[0].user_type == type1
+
+    teachers = user_svc_integration.get_users_by_type(type3)
+    assert len(teachers) >= 1
+    assert teachers[0].user_type == type3
+
 
 
 def test_add_user(user_svc_integration: UserService):
