@@ -2,9 +2,9 @@
 #
 # Port: Service
 # =============
-# 1530: Caddy
-# 1531: Backend (uvicorn / FastAPI)
-# 1532: Front-end (Webpack / React)
+# 1600: Caddy
+# 1601: Backend (uvicorn / FastAPI)
+# 1602: Front-end (Webpack / React)
 
 http://localhost:1600 {
     reverse_proxy /api/* http://localhost:1601
