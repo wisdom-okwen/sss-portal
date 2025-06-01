@@ -1,8 +1,9 @@
 from typing import Self
-from sqlalchemy import String, Integer
+from sqlalchemy import String, Integer, Enum
 from sqlalchemy.orm import Mapped, mapped_column
 from .base_entity import EntityBase
 from backend.models.user import User
+from ..utility.shared_enum import UserType
 
 
 class UserEntity(EntityBase):
@@ -15,6 +16,7 @@ class UserEntity(EntityBase):
     middle_name: Mapped[str] = mapped_column(String(64), nullable=True)
     email: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, default="")
     password: Mapped[str] = mapped_column(String(64), nullable=False, default="")
+    user_type: Mapped[UserType] = mapped_column(Enum(UserType), nullable=False, default=UserType.other)
     
 
     def to_model(self) -> User:
@@ -24,7 +26,8 @@ class UserEntity(EntityBase):
             first_name=self.first_name,
             last_name=self.last_name,
             middle_name=self.middle_name,
-            email=self.email
+            email=self.email,
+            user_type=self.user_type
         )
 
     @classmethod
@@ -35,5 +38,6 @@ class UserEntity(EntityBase):
             first_name=model.first_name,
             last_name=model.last_name,
             middle_name=model.middle_name,
-            email=model.email
+            email=model.email,
+            user_type=model.user_type
         )

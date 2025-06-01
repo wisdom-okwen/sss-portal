@@ -9,13 +9,8 @@ from sqlalchemy.orm import Session
 from ..models.user import User
 from ..entities.user import UserEntity
 from .reset_table_id_sequence import reset_table_id_seq
+from ..utility.shared_enum import UserType
 
-    # id: int | None = None
-    # first_name: str = ''
-    # last_name: str = ''
-    # middle_name: str = ''
-    # email: str = ''
-    # password: str = ''
 
 
 evan = User(
@@ -24,7 +19,8 @@ evan = User(
     last_name="Explorer",
     middle_name="E.",
     email="evanexplorer@gmail.com",
-    password='password'
+    password='password',
+    user_type=UserType.student
 )
 
 harry = User(
@@ -33,10 +29,21 @@ harry = User(
     last_name="Helper",
     middle_name="H.",
     email="harryhelper@gmail.com",
-    password='password'
+    password='password',
+    user_type=UserType.guardian
 )
 
-users = [evan, harry]
+armstrong = User(
+    id=3,
+    first_name="Armstrong",
+    last_name="Obale",
+    middle_name="",
+    email="armstrong@gmail.com",
+    password="armstrong",
+    user_type=UserType.administrator
+)
+
+users = [evan, harry, armstrong]
 
 def insert_fake_data(session: Session):
     global users
