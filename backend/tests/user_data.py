@@ -39,7 +39,7 @@ armstrong = User(
     last_name="Obale",
     middle_name="",
     email="armstrong@gmail.com",
-    passowrd="armstrong",
+    password="armstrong",
     user_type=UserType.administrator
 )
 
