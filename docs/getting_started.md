@@ -21,7 +21,7 @@ POSTGRES_PORT=5432
 POSTGRES_DATABASE=csxl
 HOST=localhost
 GOOGLE_CLIENT_ID=your-google-client-id
-JWT_SECRET=REPLACE_ME
+JWT_SECRET=REPLACE_ME=...
 ```
 
 You should replace the value associated with `JWT_SECRET` with a randomly generated value, such as a [generated UUID](https://www.uuidgenerator.net/).
