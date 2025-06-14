@@ -80,7 +80,7 @@ class UserService:
     def update_user(self, user_id: int, user: User) -> User:
         """Update existing user with new data."""
         user_entity = self._session.get(UserEntity, user_id)
-        if user is None:
+        if user_entity is None:
             raise ResourceNotFoundException(
                 f"User does not exist in table."
             )
