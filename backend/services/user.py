@@ -59,7 +59,7 @@ class UserService:
         return user.to_model()
 
 
-    def get_users_by_type(self, user_type: UserType) -> User:
+    def get_users_by_type(self, user_type: UserType) -> list[User]:
         """Get all users with user_type of student."""
         query = select(UserEntity).where(UserEntity.user_type == user_type)
         students = self._session.scalars(query).all()
