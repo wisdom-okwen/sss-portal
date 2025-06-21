@@ -25,7 +25,7 @@ def get_users(user_service: UserService = Depends()) -> list[User]:
     return user_service.get_all()
 
 
-@api.get("/by_user_type{user_type}", response_model=list[User], tags=["Users"])
+@api.get("/by_user_type/{user_type}", response_model=list[User], tags=["Users"])
 def get_by_user_type(
     user_type: UserType, user_service: UserService = Depends()
 ) -> list[User]:
