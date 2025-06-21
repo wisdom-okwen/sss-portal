@@ -1,10 +1,16 @@
 """Entrypoint of backend API exposing the FastAPI `app` to be served by an application server such as uvicorn."""
 
+from .api.user import api as user_api
 from pathlib import Path
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from backend.services.exceptions import (
+    ResourceNotFoundException,
+    UserPermissionException,
+    ResourceExistsException,
+)
 
 
 from .api import (
@@ -33,7 +39,7 @@ app.add_middleware(GZipMiddleware)
 
 # Define CORS settings
 origins = [
-    "http://localhost:1601",   # Another example if React is on a different port
+    "http://localhost:1601",  # Another example if React is on a different port
 ]
 
 # Apply CORS middleware
@@ -56,14 +62,34 @@ for feature_api in feature_apis:
 app.mount("/", static_files.StaticFileMiddleware(directory=Path("./static")))
 
 
-# Add application-wide exception handling middleware for commonly encountered API Exceptions
-# @app.exception_handler(UserPermissionException)
-# def permission_exception_handler(request: Request, e: UserPermissionException):
-#     return JSONResponse(status_code=403, content={"message": str(e)})
+@app.exception_handler(ResourceNotFoundException)
+async def resource_not_found_exception_handler(
+    request: Request, exc: ResourceNotFoundException
+):
+    return JSONResponse(
+        status_code=404,
+        content={"detail": str(exc)},
+    )
 
 
-# @app.exception_handler(ResourceNotFoundException)
-# def resource_not_found_exception_handler(
-#     request: Request, e: ResourceNotFoundException
-# ):
-#     return JSONResponse(status_code=404, content={"message": str(e)})
+@app.exception_handler(UserPermissionException)
+async def user_permission_exception_handler(
+    request: Request, exc: UserPermissionException
+):
+    return JSONResponse(
+        status_code=403,
+        content={"detail": str(exc)},
+    )
+
+
+@app.exception_handler(ResourceExistsException)
+async def resource_exists_exception_handler(
+    request: Request, exc: ResourceExistsException
+):
+    return JSONResponse(
+        status_code=409,
+        content={"detail": str(exc)},
+    )
+
+
+app.include_router(user_api)
