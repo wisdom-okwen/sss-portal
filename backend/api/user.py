@@ -42,6 +42,7 @@ def get_by_user_type(
     return user_service.get_users_by_type(user_type)
 
 
+
 @api.get("/{user_id}", response_model=User, tags=["Users"])
 def get_user(user_id: int, user_service: UserService = Depends()) -> User:
     """
@@ -87,10 +88,13 @@ def add_user(user: User, user_service: UserService = Depends()) -> User:
     return user_service.add_user(user)
 
 
-@api.put(
-    "/{user_id}", responses={404: {"model": None}}, response_model=User, tags=["Users"]
-)
-def update_user(user_id: int, user: User, user_service: UserService = Depends()):
+
+@api.put("/{user_id}", responses={404: {"model": None}}, response_model=User, tags=["Users"])
+def update_user(
+    user_id: int,
+    user: User,
+    user_service: UserService = Depends()
+):
     """
     Update a user in table
 
@@ -105,8 +109,11 @@ def update_user(user_id: int, user: User, user_service: UserService = Depends())
     return user_service.update_user(user_id, user)
 
 
-@api.delete("/{id}", response_model=User, tags=["Users"])
-def delete_user(user_id: int, user_service: UserService = Depends()) -> User:
+@api.delete('/{id}', response_model=User, tags=["Users"])
+def delete_user(
+    user_id: int,
+    user_service: UserService = Depends()
+) -> User:
     """
     Delete a user by id
 
