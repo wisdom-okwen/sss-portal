@@ -6,12 +6,17 @@ from ..utility.security import hash_password
 from ..models.user import User
 from ..database import db_session
 from ..entities.user import UserEntity
-from .exceptions import UserPermissionException, ResourceNotFoundException
+from .exceptions import (
+    UserPermissionException,
+    ResourceNotFoundException,
+    ResourceExistsException,
+)
 from ..utility.shared_enum import UserType
 
 
 class UserService:
     """Initialize service for communication to user table in db."""
+
     _session: Session
 
     def __init__(self, session: Session = Depends(db_session)):
@@ -23,7 +28,7 @@ class UserService:
         query = select(UserEntity)
         entities = self._session.scalars(query).all()
         return [entity.to_model() for entity in entities]
-    
+
 
     def get_user(self, user_id: int) -> User:
         """Get user by id."""
@@ -65,25 +70,34 @@ class UserService:
         students = self._session.scalars(query).all()
         return [student.to_model() for student in students]
 
-
+      
     def add_user(self, user: User) -> User:
         """Add new user."""
         if user.id:
             user.id = None
 
+        query = select(UserEntity).where(UserEntity.email == user.email)
+        existing_user = self._session.scalars(query).one_or_none()
+        if existing_user:
+            raise ResourceExistsException(
+                f"User with email {user.email} already exists."
+            )
         user_entity = UserEntity.from_model(user)
         self._session.add(user_entity)
         self._session.commit()
+        
         return user_entity.to_model()
-    
+
 
     def update_user(self, user_id: int, user: User) -> User:
         """Update existing user with new data."""
         user_entity = self._session.get(UserEntity, user_id)
         if user_entity is None:
+
             raise ResourceNotFoundException(
                 f"User does not exist in table."
             )
+
         user_entity.id = user.id
         user_entity.first_name = user.first_name
         user_entity.last_name = user.last_name
@@ -94,6 +108,7 @@ class UserService:
 
         self._session.commit()
         return user_entity.to_model()
+
 
     
     def delete_user(self, user_id: int) -> User:
@@ -109,7 +124,6 @@ class UserService:
             raise ResourceNotFoundException(
                 f"No user found with matching id: {user_id}"
             )
-    
         self._session.delete(user)
         self._session.commit()
         return user.to_model()
