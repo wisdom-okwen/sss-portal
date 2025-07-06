@@ -36,19 +36,30 @@ harry = User(
 armstrong = User(
     id=3,
     first_name="Armstrong",
-    last_name="Obale",
-    middle_name="",
+    last_name="Allen",
+    middle_name="A.",
     email="armstrong@gmail.com",
     password="armstrong",
     user_type=UserType.administrator
 )
 
-users = [evan, harry, armstrong]
+isaac = User(
+    id=4,
+    first_name="Isaac",
+    last_name="Israel",
+    middle_name="I.",
+    email="isaacs@hotmail.com",
+    password="IISAAC@creatin.com",
+    user_type=UserType.teacher
+)
+
+users = [evan, harry, armstrong, isaac]
 
 def insert_fake_data(session: Session):
     global users
     entities = []
     for user in users:
+        print("Entities: ", entities)
         entity = UserEntity.from_model(user)
         session.add(entity)
         entities.append(entity)
