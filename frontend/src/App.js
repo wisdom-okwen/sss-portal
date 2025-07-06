@@ -1,11 +1,14 @@
 import "./App.css";
 import HomePage from "./components/homepage/HomePage";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <HomePage />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <HomePage />
+      </div>
+    </BrowserRouter>
   );
 }
 
