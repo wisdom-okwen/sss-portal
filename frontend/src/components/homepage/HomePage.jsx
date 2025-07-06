@@ -19,6 +19,8 @@ import { newsItems } from "../../assets/newsData";
 function HomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [authOpen, setAuthOpen] = React.useState(false);
+  const [isSignup, setIsSignup] = React.useState(false);
   const navItems = [
     { label: 'News', icon: <NewspaperIcon />, path: '/' },
     { label: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
@@ -30,7 +32,7 @@ function HomePage() {
 
   return (
     <Box>
-      <NavBar />
+      <NavBar onProfileClick={() => { setAuthOpen(true); setIsSignup(false); }} />
       <Box sx={{ display: 'flex', height: 'calc(100vh - 64px)' }}>
         {/* Left Navigation (hidden on mobile) */}
         {!isMobile && (

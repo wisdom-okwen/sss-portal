@@ -30,7 +30,7 @@ const personaTitles = {
   proxy: "SSS Portal - Proxy",
 };
 
-const NavBar = ({ persona = "admin" }) => {
+const NavBar = ({ persona = "admin", onProfileClick }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -134,7 +134,7 @@ const NavBar = ({ persona = "admin" }) => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Profile" arrow>
-              <IconButton color="inherit">
+              <IconButton color="inherit" onClick={onProfileClick}>
                 <AccountCircleIcon />
               </IconButton>
             </Tooltip>
