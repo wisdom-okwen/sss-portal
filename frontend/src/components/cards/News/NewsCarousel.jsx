@@ -6,34 +6,74 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import NewsCard from "./NewsCard";
 
 const NewsCarousel = ({ items }) => {
-  const [index, setIndex] = useState(0);
   const visibleCount = 2;
-  const maxIndex = Math.max(0, items.length - visibleCount);
-
-
+  const [index, setIndex] = useState(visibleCount);
+  const cardWidth = 430;
+  const total = items.length;
   const intervalRef = useRef();
 
-  const handlePrev = () => setIndex((prev) => Math.max(prev - 1, 0));
-  const handleNext = () => setIndex((prev) => Math.min(prev + 1, maxIndex));
+  // Prepare cyclic items: [last N] + items + [first N]
+  const cyclicItems = [
+    ...items.slice(-visibleCount),
+    ...items,
+    ...items.slice(0, visibleCount),
+  ];
+  // removed unused maxIndex
 
+  const handlePrev = () => {
+    setIndex((prev) => prev - 1);
+  };
+  const handleNext = () => {
+    setIndex((prev) => prev + 1);
+  };
+
+  // Auto-play effect
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      setIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
+      setIndex((prev) => prev + 1);
     }, 4000);
     return () => clearInterval(intervalRef.current);
-  }, [maxIndex]);
+  }, [total]);
+
+  // Looping effect for seamless transition
+  useEffect(() => {
+    if (index > total) {
+      setTimeout(() => {
+        setIndex(visibleCount);
+      }, 600); // match transition duration
+    } else if (index === 0) {
+      setTimeout(() => {
+        setIndex(total);
+      }, 600);
+    }
+  }, [index, total, visibleCount]);
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", width: "100%", justifyContent: "center", mt: 4 }}>
-      <IconButton onClick={handlePrev} disabled={index === 0} sx={{ mx: 2 }}>
+    <Box sx={{ display: "flex", alignItems: "center", width: "100%", justifyContent: "center", mt: 6 }}>
+      <IconButton onClick={handlePrev} sx={{ mx: 3 }}>
         <ArrowBackIosNewIcon fontSize="large" />
       </IconButton>
-      <Box sx={{ display: "flex", overflow: "hidden", width: { xs: 400, sm: 900 }, justifyContent: "center" }}>
-        {items.slice(index, index + visibleCount).map((item) => (
-          <NewsCard key={item.id} {...item} />
-        ))}
+      <Box
+        sx={{
+          overflow: "hidden",
+          width: { xs: cardWidth * visibleCount + 15, sm: cardWidth * visibleCount + 300 },
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            transition: (index === 0 || index > total) ? "none" : "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+            transform: `translateX(-${index * cardWidth}px)`,
+          }}
+        >
+          {cyclicItems.map((item, i) => (
+            <NewsCard key={i + '-' + item.id} {...item} />
+          ))}
+        </Box>
       </Box>
-      <IconButton onClick={handleNext} disabled={index === maxIndex} sx={{ mx: 2 }}>
+      <IconButton onClick={handleNext} sx={{ mx: 3 }}>
         <ArrowForwardIosIcon fontSize="large" />
       </IconButton>
     </Box>

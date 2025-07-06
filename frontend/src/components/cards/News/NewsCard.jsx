@@ -4,11 +4,12 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
+
 const NewsCard = ({ title, description, image, date }) => (
-  <Card sx={{ maxWidth: 420, minWidth: 340, m: 2, boxShadow: 4 }}>
+  <Card sx={{ maxWidth: 480, minWidth: 360, m: 2, boxShadow: 6 }}>
     <CardMedia
       component="img"
-      height="210"
+      height="240"
       image={image}
       alt={title}
       sx={{ objectFit: "cover" }}
@@ -17,7 +18,7 @@ const NewsCard = ({ title, description, image, date }) => (
       <Typography gutterBottom variant="h5" component="div" fontWeight={700}>
         {title}
       </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 1.5 }}>
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
         {description}
       </Typography>
       <Typography variant="caption" color="text.secondary">
