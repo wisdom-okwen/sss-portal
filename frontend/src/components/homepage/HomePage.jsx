@@ -9,9 +9,11 @@ import SchoolIcon from '@mui/icons-material/School';
 import PeopleIcon from '@mui/icons-material/People';
 import ClassIcon from '@mui/icons-material/Class';
 import SettingsIcon from '@mui/icons-material/Settings';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
 
 const HomePage = () => {
   const navItems = [
+    { label: 'News', icon: <NewspaperIcon />, path: '/' },
     { label: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
     { label: 'Students', icon: <SchoolIcon />, path: '/students' },
     { label: 'Teachers', icon: <PeopleIcon />, path: '/teachers' },
@@ -59,6 +61,7 @@ const HomePage = () => {
         {/* Right Content (Routed Pages) */}
         <Box sx={{ flexGrow: 1, p: 4, bgcolor: 'background.default' }}>
           <Routes>
+            <Route path="/" element={<NewsPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/students" element={<StudentsPage />} />
             <Route path="/teachers" element={<TeachersPage />} />
