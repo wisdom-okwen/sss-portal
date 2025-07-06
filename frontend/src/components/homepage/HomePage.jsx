@@ -13,6 +13,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import NewsCarousel from "../cards/News/NewsCarousel";
+import { newsItems } from "../../assets/newsData";
 
 function HomePage() {
   const theme = useTheme();
@@ -102,17 +104,7 @@ function HomePage() {
     return (
       <Box>
         <Box sx={{ fontSize: 24, fontWeight: 'bold', mb: 2 }}>News</Box>
-        <Box>
-          <Box sx={{ mb: 2 }}>
-            <b>Welcome to the SSS Portal Admin!</b> Here you can manage students, teachers, classes, and more.
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <b>Latest Update:</b> The portal now supports contextual rendering for different user personas.
-          </Box>
-          <Box>
-            <b>Tip:</b> Use the left navigation to access different management features.
-          </Box>
-        </Box>
+        <NewsCarousel items={newsItems} />
       </Box>
     );
   }
