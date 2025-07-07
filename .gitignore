@@ -29,3 +29,5 @@ build/
 *.egg-info/
 
 *.env
+*package-lock.json
+*dist
