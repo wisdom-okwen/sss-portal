@@ -7,3 +7,16 @@ class UserType(str, Enum):
     teacher = "teacher"
     administrator = "administrator"
     other = "other"
+
+
+class OrganizationType(str, Enum):
+    academic = "academic"
+    competitive = "competitive"
+    cultural = "cultural"
+    non_profit = "non_profit"
+    other = "other"
+    political = "political"
+    religious = "religious"
+    social = "social"
+    sports = "sports"
+

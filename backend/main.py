@@ -15,6 +15,7 @@ from backend.services.exceptions import (
 
 from .api import (
     user,
+    organization,
     static_files,
 )
 
@@ -29,6 +30,7 @@ app = FastAPI(
     description=description,
     openapi_tags=[
         user.openapi_tags,
+        organization.openapi_tags,
         # post.openapi_tags,
         # google_auth.openapi_tags
     ],
@@ -53,7 +55,7 @@ app.add_middleware(
 
 
 # Plugging in each of the router APIs
-feature_apis = [user]
+feature_apis = [user, organization]
 
 for feature_api in feature_apis:
     app.include_router(feature_api.api)
