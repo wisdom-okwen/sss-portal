@@ -1,2 +1,2 @@
 from .user import User
-from .course import Course
+from .course import Course, CourseTime

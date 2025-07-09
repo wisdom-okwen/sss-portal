@@ -1,6 +1,7 @@
 """Entrypoint of backend API exposing the FastAPI `app` to be served by an application server such as uvicorn."""
 
 from .api.user import api as user_api
+from .api.course import api as course_api
 from pathlib import Path
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
@@ -11,11 +12,16 @@ from backend.services.exceptions import (
     UserPermissionException,
     ResourceExistsException,
 )
+from sqlalchemy import inspect
+from backend.database import Base, engine
+from backend.db import User, Course
 
+Base.metadata.create_all(bind=engine)
 
 from .api import (
     user,
     static_files,
+    course,
 )
 
 description = """
@@ -53,7 +59,7 @@ app.add_middleware(
 
 
 # Plugging in each of the router APIs
-feature_apis = [user]
+feature_apis = [user, course]
 
 for feature_api in feature_apis:
     app.include_router(feature_api.api)
@@ -92,4 +98,4 @@ async def resource_exists_exception_handler(
     )
 
 
-app.include_router(user_api)
+Base.metadata.create_all(bind=engine)

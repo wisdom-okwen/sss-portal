@@ -15,10 +15,10 @@ class Course(BaseModel):
     course_name: str = ""
     course_code: str = ""
     course_description: str = ""
-    course_lecturer: User | None = None
+    course_lecturer: int | None = None
     course_capacity: int = 0
     course_time: List[CourseTime] = []
-    course_members: List[User] = []
+    course_members: List[int] = []
     credits: int = 0
     department_id: int | None = None
     prerequisites: List[int] = []
