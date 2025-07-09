@@ -9,15 +9,18 @@ from ..utility.shared_enum import UserType
 class UserEntity(EntityBase):
     # Entity for user table
     __tablename__ = "user"
-    
+
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     first_name: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     last_name: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     middle_name: Mapped[str] = mapped_column(String(64), nullable=True)
-    email: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, default="")
+    email: Mapped[str] = mapped_column(
+        String(64), nullable=False, unique=True, default=""
+    )
     password: Mapped[str] = mapped_column(String(64), nullable=False, default="")
-    user_type: Mapped[UserType] = mapped_column(Enum(UserType), nullable=False, default=UserType.other)
-    
+    user_type: Mapped[UserType] = mapped_column(
+        Enum(UserType), nullable=False, default=UserType.other
+    )
 
     def to_model(self) -> User:
         """Create pydantic model from the entity."""
@@ -27,7 +30,7 @@ class UserEntity(EntityBase):
             last_name=self.last_name,
             middle_name=self.middle_name,
             email=self.email,
-            user_type=self.user_type
+            user_type=self.user_type,
         )
 
     @classmethod
@@ -39,5 +42,5 @@ class UserEntity(EntityBase):
             last_name=model.last_name,
             middle_name=model.middle_name,
             email=model.email,
-            user_type=model.user_type
+            user_type=model.user_type,
         )
