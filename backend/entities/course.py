@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import ARRAY
 
 
 class CourseEntity(EntityBase):
-    __tablename__ = "course"
+    __tablename__ = "courses"
 
     id: Mapped[int] = mapped_column(
         Integer, primary_key=True, autoincrement=True, index=True
