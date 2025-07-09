@@ -38,11 +38,7 @@ def get_course_by_name(name: str, course_service: CourseService = Depends()) -> 
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@api.get(
-    "/by_lecturer/{lecturer_id}",
-    response_model=List[Course],
-    responses={404: {"description": "No courses found for lecturer"}},
-)
+@api.get("/by_lecturer/{lecturer_id}", response_model=List[Course])
 def get_courses_by_lecturer(
     lecturer_id: int, course_service: CourseService = Depends()
 ) -> List[Course]:
@@ -64,11 +60,7 @@ def get_course_by_code(code: str, course_service: CourseService = Depends()) -> 
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@api.get(
-    "/by_credit/{credit}",
-    response_model=List[Course],
-    responses={404: {"description": "No courses found with given credits"}},
-)
+@api.get("/by_credit/{credit}", response_model=List[Course])
 def get_courses_by_credit(
     credit: int, course_service: CourseService = Depends()
 ) -> List[Course]:
@@ -78,11 +70,7 @@ def get_courses_by_credit(
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@api.get(
-    "/by_semester/{semester}",
-    response_model=List[Course],
-    responses={404: {"description": "No courses found for semester"}},
-)
+@api.get("/by_semester/{semester}", response_model=List[Course])
 def get_courses_by_semester(
     semester: str, course_service: CourseService = Depends()
 ) -> List[Course]:
@@ -92,11 +80,7 @@ def get_courses_by_semester(
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@api.get(
-    "/by_location/{location}",
-    response_model=List[Course],
-    responses={404: {"description": "No courses found at location"}},
-)
+@api.get("/by_location/{location}", response_model=List[Course])
 def get_courses_by_location(
     location: str, course_service: CourseService = Depends()
 ) -> List[Course]:
@@ -113,11 +97,7 @@ def get_courses_by_department_id(
     return course_service.get_courses_by_department_id(department_id)
 
 
-@api.get(
-    "/by_type/{course_type}",
-    response_model=List[Course],
-    responses={404: {"description": "No courses found with type"}},
-)
+@api.get("/by_type/{course_type}", response_model=List[Course])
 def get_courses_by_course_type(
     course_type: str, course_service: CourseService = Depends()
 ) -> List[Course]:
@@ -127,11 +107,7 @@ def get_courses_by_course_type(
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@api.get(
-    "/by_prerequisites/",
-    response_model=List[Course],
-    responses={404: {"description": "No courses found with prerequisites"}},
-)
+@api.get("/by_prerequisites/", response_model=List[Course])
 def get_courses_by_prerequisites(
     prerequisite: List[int] = Query([]),  # <-- integers, not strings
     course_service: CourseService = Depends(),
@@ -142,11 +118,7 @@ def get_courses_by_prerequisites(
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@api.get(
-    "/by_time/",
-    response_model=List[Course],
-    responses={404: {"description": "No courses found at given time"}},
-)
+@api.get("/by_time/", response_model=List[Course])
 def get_courses_by_time(
     day: str = Query(..., description="Day of the week"),
     start_time: str = Query(..., description="Start time (HH:MM)"),
