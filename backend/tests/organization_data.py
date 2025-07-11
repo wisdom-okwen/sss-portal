@@ -8,7 +8,7 @@ from backend.entities.organization import OrganizationEntity
 from backend.tests.reset_table_id_sequence import reset_table_id_seq
 from ..models.organization import Organization
 from ..utility.shared_enum import OrganizationType
-from user_data import amy, evan, armstrong, wisdom, prince, samuel
+from .user_data import amy, evan, armstrong, wisdom, prince, samuel
 
 debate = Organization(
     id="1",
