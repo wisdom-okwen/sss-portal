@@ -18,7 +18,7 @@ from ..database import engine
 from ..env import getenv
 from .. import entities
 
-from ..tests import user_data
+from ..tests import user_data, course_data
 
 # Ensures that the script can only be run in development mode
 if getenv("MODE") != "development":
@@ -37,4 +37,5 @@ entities.EntityBase.metadata.create_all(engine)
 # Initialize the SQLAlchemy session
 with Session(engine) as session:
     user_data.insert_fake_data(session)
+    course_data.insert_fake_course_data(session)
     session.commit()
