@@ -1,0 +1,356 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.login-page-split {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.login-image {
+  flex: 60 0 0;
+  background-image: url('../../assets/teen-best-friends-posing-together.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.login-form-container {
+  flex: 40 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(32, 191, 235, 0.95);
+  height: 100vh;
+}
+
+.login-card {
+  background: #fff;
+  padding: 2.5rem 2.5rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  min-width: 380px;
+  max-width: 440px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #20bfeb;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1rem;
+}
+
+.form-group input {
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 0;
+  font-size: 1rem;
+  transition: border 0.2s;
+  background: none;
+  box-shadow: none;
+}
+
+.form-group input:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.floating-label-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.7rem;
+  transform: translateY(-50%);
+  height: 1.2rem;
+  width: 1.2rem;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.input-icon img {
+  height: 1.2rem;
+  width: 1.2rem;
+  object-fit: contain;
+  opacity: 0.7;
+}
+
+.floating-input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 1.1rem 1rem 0.5rem 1rem;
+  padding-left: 2.5rem;
+  border: none;
+  border-bottom: 2px solid #e0e0e0;
+  border-radius: 0;
+  font-size: 1rem;
+  background: none;
+  transition: border-color 0.2s;
+}
+
+.floating-input:focus {
+  border-bottom: 2.5px solid #20bfeb;
+  outline: none;
+  background: none;
+}
+
+.floating-label {
+  position: absolute;
+  left: 1rem;
+  top: 1.1rem;
+  color: #888;
+  font-size: 1rem;
+  pointer-events: none;
+  background: #fff;
+  padding: 0 0.2rem;
+  transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+.floating-input:focus + .floating-label,
+.floating-input:not(:placeholder-shown):not(:focus):valid + .floating-label {
+  top: -0.7rem;
+  left: 0.8rem;
+  font-size: 0.85rem;
+  color: #20bfeb;
+  background: #fff;
+}
+
+.floating-label-group .floating-input {
+  border: none;
+  border-bottom: 2px solid #20bfeb;
+  border-radius: 0;
+  background: none;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 1.1rem 1rem 0.5rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.floating-label-group .floating-input:focus {
+  border-bottom: 2.5px solid #0b8ecf;
+  outline: none;
+  background: none;
+}
+
+.login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  font-size: 0.98rem;
+  width: 100%;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: #333;
+  font-size: 0.98rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.remember-me input[type="checkbox"] {
+  accent-color: #20bfeb;
+  margin-right: 0.3em;
+}
+
+.forgot-password {
+  color: #20bfeb;
+  text-decoration: none;
+  font-size: 0.98rem;
+  transition: color 0.2s;
+  margin-left: 1em;
+}
+
+.forgot-password:hover {
+  color: #0b8ecf;
+  text-decoration: underline;
+}
+
+.login-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #20bfeb 60%, #0b8ecf 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(32,191,235,0.08);
+}
+
+.login-btn:hover {
+  background: linear-gradient(90deg, #0b8ecf 60%, #20bfeb 100%);
+  box-shadow: 0 4px 16px rgba(32,191,235,0.15);
+}
+
+.login-links {
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 0.97rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.login-links a {
+  color: #20bfeb;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.login-links a:hover {
+  color: #0b8ecf;
+}
+
+.no-account-text {
+  color: #555;
+}
+
+.form-group.floating-label-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-icon {
+  position: absolute;
+  margin: 1.1rem 1rem;
+  pointer-events: none;
+}
+
+.floating-input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 1.1rem 1rem 0.5rem 1rem;
+  padding-left: 2.5rem; /* Add space for the icon */
+  border: none;
+  border-bottom: 2px solid #e0e0e0;
+  border-radius: 0;
+  font-size: 1rem;
+  background: none;
+  transition: border-color 0.2s;
+}
+
+.floating-input:focus {
+  border-bottom: 2.5px solid #20bfeb;
+  outline: none;
+  background: none;
+}
+
+.floating-label {
+  position: absolute;
+  left: 1rem;
+  top: 1.1rem;
+  color: #888;
+  font-size: 1rem;
+  pointer-events: none;
+  background: #fff;
+  padding: 0 0.2rem;
+  transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+.floating-input:focus + .floating-label,
+.floating-input:not(:placeholder-shown):not(:focus):valid + .floating-label {
+  top: -0.7rem;
+  left: 0.8rem;
+  font-size: 0.85rem;
+  color: #20bfeb;
+  background: #fff;
+}
+
+.floating-label-group .floating-input {
+  border: none;
+  border-bottom: 2px solid #20bfeb;
+  border-radius: 0;
+  background: none;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 1.1rem 1rem 0.5rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.floating-label-group .floating-input:focus {
+  border-bottom: 2.5px solid #0b8ecf;
+  outline: none;
+  background: none;
+}
+
+.social-login {
+  margin-top: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.social-login-text {
+  color: #888;
+  font-size: 0.98rem;
+  margin-bottom: 0.2rem;
+}
+
+.social-icons {
+  display: flex;
+  gap: 3rem; /* Increase gap for even spacing */
+}
+
+.social-icon {
+  font-size: 1.5rem; /* Make icons smaller */
+  color: #888;
+  transition: color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-icon:hover {
+  color: #20bfeb;
+  transform: scale(1.12);
+}
