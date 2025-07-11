@@ -16,10 +16,10 @@ debate = Organization(
     slug="debate_club",
     description="A club for debating various topics.",
     organization_type=OrganizationType.academic,
-    members=[wisdom, prince, evan, amy],
-    admin_members=[prince, wisdom, armstrong, samuel],
-    teachers=[samuel],
-    advisor=armstrong,
+    members=[wisdom.id, prince.id, evan.id, amy.id],
+    admin_members=[prince.id, wisdom.id, armstrong.id, samuel.id],
+    teachers=[samuel.id],
+    advisor=armstrong.id,
 )
 
 science_and_math = Organization(
@@ -28,10 +28,10 @@ science_and_math = Organization(
     slug="smc",
     description="A club for science enthusiasts.",
     organization_type=OrganizationType.academic,
-    members=[wisdom, prince],
-    admin_members=[prince, armstrong, samuel],
-    teachers=[armstrong],
-    advisor=samuel,
+    members=[wisdom.id, prince.id],
+    admin_members=[prince.id, armstrong.id, samuel.id],
+    teachers=[armstrong.id],
+    advisor=samuel.id,
 )
 
 scripture_union = Organization(
@@ -40,10 +40,10 @@ scripture_union = Organization(
     slug="su",
     description="A club for scripture study and discussion.",
     organization_type=OrganizationType.religious,
-    members=[prince, evan, amy],
-    admin_members=[armstrong],
-    teachers=[samuel],
-    advisor=armstrong,
+    members=[prince.id, evan.id, amy.id],
+    admin_members=[armstrong.id, samuel.id],
+    teachers=[samuel.id],
+    advisor=armstrong.id,
 )
 
 robotics = Organization(
@@ -55,7 +55,7 @@ robotics = Organization(
     members=[],
     admin_members=[],
     teachers=[],
-    advisor=samuel,
+    advisor=samuel.id,
 )
 
 basketball = Organization(
@@ -64,10 +64,10 @@ basketball = Organization(
     slug="basketball_team",
     description="A team for basketball players.",
     organization_type=OrganizationType.sports,
-    members=[],
-    admin_members=[],
+    members=[wisdom.id, prince.id, evan.id],
+    admin_members=[armstrong.id, samuel.id],
     teachers=[],
-    advisor=armstrong,
+    advisor=armstrong.id,
 )
 
 
@@ -80,7 +80,7 @@ acapella = Organization(
     members=[],
     admin_members=[],
     teachers=[],
-    advisor=samuel,
+    advisor=samuel.id,
 )
 
 school_choir = Organization(
@@ -92,7 +92,7 @@ school_choir = Organization(
     members=[],
     admin_members=[],
     teachers=[],
-    advisor=armstrong,
+    advisor=armstrong.id,
 )
 
 organizations = [
@@ -117,7 +117,7 @@ def insert_fake_data(session: Session):
         session, OrganizationEntity, OrganizationEntity.id, len(organizations) + 1
     )
     session.commit()
-    return entities
+    # return entities
 
 
 @pytest.fixture(autouse=True)

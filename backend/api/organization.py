@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from backend.models.user import User
 from backend.services.organization import OrganizationService
 from backend.models.organization import Organization
 from backend.database import db_session
@@ -25,10 +26,15 @@ def get_organizations(db: Session = Depends(db_session)) -> list[Organization]:
     return OrganizationService(db).get_all()
 
 
-@api.get("/by_slug/{slug}", response_model=Organization, tags=["Organizations"])
+@api.get(
+    "/by_slug/{slug}", 
+    response_model=Organization, 
+    responses={404: {"description": "Organization with slug not found"}},
+    tags=["Organizations"]
+)
 def get_organization_by_slug(
     slug: str, db: Session = Depends(db_session)
-) -> Organization | None:
+) -> Organization:
     """
     Get an organization by slug
 
@@ -43,9 +49,9 @@ def get_organization_by_slug(
 
 
 @api.get("/{organization_id}", response_model=Organization, tags=["Organizations"])
-def get_organization(
-    organization_id: str, db: Session = Depends(db_session)
-) -> Organization | None:
+def get_organization_by_id(
+    organization_id: int, db: Session = Depends(db_session)
+) -> Organization:
     """
     Get an organization by ID
 
@@ -80,8 +86,8 @@ def create_organization(
     "/{organization_id}", response_model=Organization | None, tags=["Organizations"]
 )
 def update_organization(
-    organization_id: str, organization: Organization, db: Session = Depends(db_session)
-) -> Organization | None:
+    organization_id: int, organization: Organization, db: Session = Depends(db_session)
+) -> Organization:
     """
     Update an existing organization
 
@@ -91,15 +97,15 @@ def update_organization(
         db: Database session
 
     Returns:
-        Organization | None: The updated `Organization`, or None if not found
+        Organization: The updated `Organization`, or None if not found
     """
     return OrganizationService(db).update_organization(organization_id, organization)
 
 
-@api.delete("/{organization_id}", response_model=bool, tags=["Organizations"])
+@api.delete("/{organization_id}", response_model=Organization, tags=["Organizations"])
 def delete_organization(
-    organization_id: str, db: Session = Depends(db_session)
-) -> bool:
+    organization_id: int, db: Session = Depends(db_session)
+) -> Organization:
     """
     Delete an organization by ID
 
@@ -108,14 +114,14 @@ def delete_organization(
         db: Database session
 
     Returns:
-        bool: True if deletion was successful, False otherwise
+        Organization: The deleted `Organization`, or None if not found
     """
     return OrganizationService(db).delete_organization(organization_id)
 
 
 @api.get("/user/{user_id}", response_model=list[Organization], tags=["Organizations"])
 def get_organizations_by_user(
-    user_id: str, db: Session = Depends(db_session)
+    user_id: int, db: Session = Depends(db_session)
 ) -> list[Organization]:
     """
     Get organizations associated with a user
@@ -136,8 +142,8 @@ def get_organizations_by_user(
     tags=["Organizations"],
 )
 def get_members_by_organization(
-    organization_id: str, db: Session = Depends(db_session)
-) -> list[Organization]:
+    organization_id: int, db: Session = Depends(db_session)
+) -> list[User]:
     """
     Get members of a specific organization
 
@@ -146,7 +152,7 @@ def get_members_by_organization(
         db: Database session
 
     Returns:
-        list[Organization]: List of `Organization`s with their members
+        list[User]: List of `User`s who are members of the organization
     """
     return OrganizationService(db).get_members_by_organization(organization_id)
 
@@ -155,28 +161,28 @@ def get_members_by_organization(
     "/{organization_id}/members", response_model=Organization, tags=["Organizations"]
 )
 def add_member_to_organization(
-    organization_id: str, user: Organization, db: Session = Depends(db_session)
+    organization_id: int, user_id: int, db: Session = Depends(db_session)
 ) -> Organization:
     """
     Add a member to an organization
 
     Parameters:
         organization_id: ID of the organization to add the member to
-        user: The user data to add as a member
+        user_id: The user ID to add as a member
         db: Database session
 
     Returns:
         Organization: The updated `Organization` with the new member added
     """
-    return OrganizationService(db).add_member_to_organization(organization_id, user)
+    return OrganizationService(db).add_member_to_organization(organization_id, user_id)
 
 
 @api.delete(
     "/{organization_id}/members/{user_id}", response_model=bool, tags=["Organizations"]
 )
 def remove_member_from_organization(
-    organization_id: str, user_id: str, db: Session = Depends(db_session)
-) -> bool:
+    organization_id: int, user_id: int, db: Session = Depends(db_session)
+) -> Organization:
     """
     Remove a member from an organization
 
@@ -186,7 +192,7 @@ def remove_member_from_organization(
         db: Database session
 
     Returns:
-        bool: True if removal was successful, False otherwise
+        Organization: The updated `Organization`
     """
     return OrganizationService(db).remove_member_from_organization(
         organization_id, user_id
@@ -199,8 +205,8 @@ def remove_member_from_organization(
     tags=["Organizations"],
 )
 def get_admins_by_organization(
-    organization_id: str, db: Session = Depends(db_session)
-) -> list[Organization]:
+    organization_id: int, db: Session = Depends(db_session)
+) -> list[User]:
     """
     Get admin members of a specific organization
 
@@ -209,19 +215,59 @@ def get_admins_by_organization(
         db: Database session
 
     Returns:
-        list[Organization]: List of `Organization`s with their admin members
+        list[User]: List of `User`s who are admins in the organization
     """
     return OrganizationService(db).get_admins_by_organization(organization_id)
 
 
+@api.post(
+    "/{organization_id}/admins", response_model=Organization, tags=["Organizations"]
+)
+def add_admin_to_organization(
+    organization_id: int, user_id: int, db: Session = Depends(db_session)
+) -> Organization:
+    """
+    Add an admin to an organization
+
+    Parameters:
+        organization_id: ID of the organization to add the admin to
+        user_id: The user ID to add as an admin
+        db: Database session
+
+    Returns:
+        Organization: The updated `Organization` with the new admin added
+    """
+    return OrganizationService(db).add_admin_to_organization(organization_id, user_id)
+
+@api.delete(
+    "/{organization_id}/admins/{user_id}", response_model=bool, tags=["Organizations"]
+)
+def remove_admin_from_organization(
+    organization_id: int, user_id: int, db: Session = Depends(db_session)
+) -> Organization:
+    """
+    Remove an admin from an organization
+
+    Parameters:
+        organization_id: ID of the organization to remove the admin from
+        user_id: ID of the user to remove
+        db: Database session
+
+    Returns:
+        Organization: The updated `Organization`
+    """
+    return OrganizationService(db).remove_admin_from_organization(
+        organization_id, user_id
+    )
+
 @api.get(
     "/{organization_id}/teachers",
-    response_model=list[Organization],
+    response_model=list[User],
     tags=["Organizations"],
 )
 def get_teachers_by_organization(
-    organization_id: str, db: Session = Depends(db_session)
-) -> list[Organization]:
+    organization_id: int, db: Session = Depends(db_session)
+) -> list[User]:
     """
     Get teachers of a specific organization
 
@@ -230,60 +276,36 @@ def get_teachers_by_organization(
         db: Database session
 
     Returns:
-        list[Organization]: List of `Organization`s with their teachers
+        list[User]: List of `User`s who are teachers in the organization
     """
     return OrganizationService(db).get_teachers_by_organization(organization_id)
 
-
-@api.get(
-    "/{organization_id}/executive_members",
-    response_model=list[Organization],
-    tags=["Organizations"],
-)
-def get_executive_members_by_organization(
-    organization_id: str, db: Session = Depends(db_session)
-) -> list[Organization]:
-    """
-    Get executive members of a specific organization
-
-    Parameters:
-        organization_id: ID of the organization to retrieve executive members for
-        db: Database session
-
-    Returns:
-        list[Organization]: List of `Organization`s with their executive members
-    """
-    return OrganizationService(db).get_executive_members_by_organization(
-        organization_id
-    )
-
-
 @api.post(
-    "/{organization_id}/admins", response_model=Organization, tags=["Organizations"]
+    "/{organization_id}/teachers", response_model=Organization, tags=["Organizations"]
 )
-def add_admin_to_organization(
-    organization_id: str, user: Organization, db: Session = Depends(db_session)
+def add_teacher_to_organization(
+    organization_id: int, user_id: int, db: Session = Depends(db_session)
 ) -> Organization:
     """
-    Add an admin to an organization
+    Add a teacher to an organization
 
     Parameters:
-        organization_id: ID of the organization to add the admin to
-        user: The user data to add as an admin
+        organization_id: ID of the organization to add the teacher to
+        user_id: The user ID to add as a teacher
         db: Database session
 
     Returns:
-        Organization: The updated `Organization` with the new admin added
+        Organization: The updated `Organization` with the new teacher added
     """
-    return OrganizationService(db).add_admin_to_organization(organization_id, user)
+    return OrganizationService(db).add_teacher_to_organization(organization_id, user_id)
 
 
 @api.get(
     "/{organization_id}/advisor", response_model=Organization, tags=["Organizations"]
 )
 def get_advisor_by_organization(
-    organization_id: str, db: Session = Depends(db_session)
-) -> Organization | None:
+    organization_id: int, db: Session = Depends(db_session)
+) -> User | None:
     """
     Get the advisor of a specific organization
 
@@ -292,7 +314,7 @@ def get_advisor_by_organization(
         db: Database session
 
     Returns:
-        Organization | None: The `Organization` with its advisor, or None if not found
+        User | None: The `User` who is the advisor, or None if not found
     """
     return OrganizationService(db).get_advisor_by_organization(organization_id)
 
@@ -300,27 +322,27 @@ def get_advisor_by_organization(
 @api.post(
     "/{organization_id}/advisor", response_model=Organization, tags=["Organizations"]
 )
-def add_advisor_to_organization(
-    organization_id: str, user: Organization, db: Session = Depends(db_session)
+def set_advisor_for_organization(
+    organization_id: int, user_id: int, db: Session = Depends(db_session)
 ) -> Organization:
     """
     Add an advisor to an organization
 
     Parameters:
         organization_id: ID of the organization to add the advisor to
-        user: The user data to add as an advisor
+        user_id: The user ID to add as an advisor
         db: Database session
 
     Returns:
         Organization: The updated `Organization` with the new advisor added
     """
-    return OrganizationService(db).set_advisor_for_organization(organization_id, user)
+    return OrganizationService(db).set_advisor_for_organization(organization_id, user_id)
 
 
 @api.delete("/{organization_id}/advisor", response_model=bool, tags=["Organizations"])
 def remove_advisor_from_organization(
-    organization_id: str, db: Session = Depends(db_session)
-) -> bool:
+    organization_id: int, db: Session = Depends(db_session)
+) -> Organization:
     """
     Remove an advisor from an organization
 

@@ -4,18 +4,13 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base_entity import EntityBase
 from backend.models.user import User
 from ..utility.shared_enum import UserType
-from backend.entities.association_tables import (
-    members_table,
-    admin_members_table,
-    teachers_table,
-)
 
 
 class UserEntity(EntityBase):
     # Entity for user table
     __tablename__ = "user"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True, index=True)
     first_name: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     last_name: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     middle_name: Mapped[str] = mapped_column(String(64), nullable=True)
@@ -25,24 +20,6 @@ class UserEntity(EntityBase):
     password: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     user_type: Mapped[UserType] = mapped_column(
         Enum(UserType), nullable=False, default=UserType.other
-    )
-
-    organizations_as_member = relationship(
-        "OrganizationEntity", secondary=members_table, back_populates="members"
-    )
-    organizations_as_admin = relationship(
-        "OrganizationEntity",
-        secondary=admin_members_table,
-        back_populates="admin_members",
-    )
-    organizations_as_teacher = relationship(
-        "OrganizationEntity", secondary=teachers_table, back_populates="teachers"
-    )
-
-    advised_organizations = relationship(
-        "OrganizationEntity",
-        back_populates="advisor",
-        foreign_keys="OrganizationEntity.advisor_id",
     )
 
     def to_model(self) -> User:

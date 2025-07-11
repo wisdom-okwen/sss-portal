@@ -12,7 +12,8 @@ from .reset_table_id_sequence import reset_table_id_seq
 from ..utility.shared_enum import UserType
 
 
-amy = User(    id=0,
+amy = User(    
+    id=0,
     first_name="Amy",
     last_name="Adams",
     middle_name="A.",
@@ -52,7 +53,7 @@ rhonda = User(
 )
 
 armstrong = User(
-    id=3,
+    id=9,
     first_name="Armstrong",
     last_name="Allen",
     middle_name="A.",
