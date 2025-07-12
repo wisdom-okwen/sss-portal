@@ -1,17 +1,17 @@
 from fastapi import Depends
-from sqlalchemy import Enum, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from ..utility.security import hash_password
-from ..models.user import User
+from ..models.user import User, UserUpdate
 from ..database import db_session
 from ..entities.user import UserEntity
 from .exceptions import (
-    UserPermissionException,
     ResourceNotFoundException,
     ResourceExistsException,
 )
 from ..utility.shared_enum import UserType
+from ..models.auth import NewUser
 
 
 class UserService:
@@ -71,25 +71,27 @@ class UserService:
         return [student.to_model() for student in students]
 
       
-    def add_user(self, user: User) -> User:
+    def add_user(self, user: NewUser) -> User:
         """Add new user."""
-        if user.id:
-            user.id = None
-
         query = select(UserEntity).where(UserEntity.email == user.email)
         existing_user = self._session.scalars(query).one_or_none()
         if existing_user:
             raise ResourceExistsException(
                 f"User with email {user.email} already exists."
             )
+        
+        # Hash password if provided
+        hashed_password = hash_password(user.password) if user.password else ""
+        
         user_entity = UserEntity.from_model(user)
+        user_entity.password = hashed_password
         self._session.add(user_entity)
         self._session.commit()
         
         return user_entity.to_model()
 
 
-    def update_user(self, user_id: int, user: User) -> User:
+    def update_user(self, user_id: int, user: UserUpdate) -> User:
         """Update existing user with new data."""
         user_entity = self._session.get(UserEntity, user_id)
         if user_entity is None:
@@ -97,14 +99,14 @@ class UserService:
             raise ResourceNotFoundException(
                 f"User does not exist in table."
             )
-
-        user_entity.id = user.id
-        user_entity.first_name = user.first_name
-        user_entity.last_name = user.last_name
-        user_entity.email = user.email
-        user_entity.password = user.password
-        user_entity.middle_name = user.middle_name
-        user_entity.user_type = user.user_type
+        if user.first_name is not None:
+            user_entity.first_name = user.first_name
+        if user.last_name is not None:
+            user_entity.last_name = user.last_name
+        if user.middle_name is not None:
+            user_entity.middle_name = user.middle_name
+        if user.user_type is not None:
+            user_entity.user_type = user.user_type
 
         self._session.commit()
         return user_entity.to_model()
