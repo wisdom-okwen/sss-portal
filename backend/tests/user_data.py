@@ -12,6 +12,15 @@ from .reset_table_id_sequence import reset_table_id_seq
 from ..utility.shared_enum import UserType
 
 
+amy = User(    
+    id=0,
+    first_name="Amy",
+    last_name="Adams",
+    middle_name="A.",
+    email="amyadams@gmail.com",
+    password="amyadams",
+    user_type=UserType.student
+)
 
 evan = User(
     id=1,
@@ -33,8 +42,18 @@ harry = User(
     user_type=UserType.guardian
 )
 
-armstrong = User(
+rhonda = User(
     id=3,
+    first_name="Rhonda",
+    last_name="Rhodes",
+    middle_name="R.",
+    email="rhondarhodes@gmail.com",
+    password="rhondarhodes",
+    user_type=UserType.guardian
+)
+
+armstrong = User(
+    id=9,
     first_name="Armstrong",
     last_name="Allen",
     middle_name="A.",
@@ -53,7 +72,58 @@ isaac = User(
     user_type=UserType.teacher
 )
 
-users = [evan, harry, armstrong, isaac]
+prince = User(
+    id=5,
+    first_name="Prince",
+    last_name="Peters",
+    middle_name="P.",
+    email="princepeters@gmail.com",
+    password="princepeters",
+    user_type=UserType.student
+)
+
+wisdom = User(
+    id=6,
+    first_name="Wisdom",
+    last_name="Wright",
+    middle_name="W.",
+    email="wisdomwright@gmail.com",
+    password="wisdomwright",
+    user_type=UserType.student
+)
+
+daisy = User(
+    id=7,
+    first_name="Daisy",
+    last_name="Doe",
+    middle_name="D.",
+    email="daisyd@gmail.com",
+    password="daisyd",
+    user_type=UserType.administrator
+)
+
+samuel = User(
+    id=8,
+    first_name="Samuel",
+    last_name="Smith",
+    middle_name="S.",
+    email="samuel@gmail.com",
+    password="samuel",
+    user_type=UserType.teacher
+)
+
+users = [
+    amy, 
+    daisy, 
+    evan, 
+    harry, 
+    armstrong, 
+    isaac, 
+    prince, 
+    wisdom, 
+    samuel, 
+    rhonda
+]
 
 def insert_fake_data(session: Session):
     global users
