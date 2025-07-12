@@ -3,7 +3,7 @@ Mock data for organizations.
 """
 
 import pytest
-from requests import Session
+from sqlalchemy.orm import Session
 from backend.entities.organization import OrganizationEntity
 from backend.tests.reset_table_id_sequence import reset_table_id_seq
 from ..models.organization import Organization
