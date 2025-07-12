@@ -8,6 +8,7 @@ from backend.utility.shared_enum import UserType
 from backend.services.exceptions import (
     ResourceNotFoundException,
     ResourceExistsException,
+    UserPermissionException,
 )
 
 
@@ -140,7 +141,8 @@ class OrganizationService:
         if not user:
             raise ResourceNotFoundException(f"User with ID {user_id} not found.")
         if user.user_type != UserType.student:
-            raise ValueError("Only students can be added as members")
+            # ToDo: Create new exception to handle unacceptable operations.
+            raise UserPermissionException("Add student", "Only students can be added as members")
         if user.id in org_entity.member_ids:
             raise ResourceExistsException(
                 "User is already a member of this organization"
