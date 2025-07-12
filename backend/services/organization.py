@@ -35,7 +35,7 @@ class OrganizationService:
             raise ResourceNotFoundException(
                 f"Organization with ID {organization_id} not found."
             )
-        return result.to_model() if result else None
+        return result.to_model()
 
     def get_organization_by_slug(self, slug: str) -> Organization:
         """Fetch an organization by its slug."""
@@ -46,8 +46,7 @@ class OrganizationService:
             raise ResourceNotFoundException(
                 f"Organization with slug '{slug}' not found."
             )
-
-        return result.to_model() if result else None
+        return result.to_model()
 
     def create_organization(self, organization: Organization) -> Organization:
         """Create a new organization."""
@@ -114,7 +113,7 @@ class OrganizationService:
         result = self._session.scalars(query).all()
         return [entity.to_model() for entity in result]
 
-    def get_members_by_organization(self, organization_id: int) -> list[User]:
+    def get_organization_members(self, organization_id: int) -> list[User]:
         """Retrieve members of a specific organization by user ID list."""
         org = self._session.get(OrganizationEntity, organization_id)
         if not org:
@@ -170,7 +169,7 @@ class OrganizationService:
         self._session.commit()
         return org_entity.to_model()
 
-    def get_teachers_by_organization(self, organization_id: int) -> list[User]:
+    def get_org_teachers(self, organization_id: int) -> list[User]:
         """Retrieve teachers of a specific organization by user ID list."""
         org = self._session.get(OrganizationEntity, organization_id)
         if not org:
@@ -206,7 +205,7 @@ class OrganizationService:
         self._session.refresh(org_entity)
         return org_entity.to_model()
 
-    def get_admins_by_organization(self, organization_id: int) -> list[User]:
+    def get_org_admins(self, organization_id: int) -> list[User]:
         """Retrieve admin members of a specific organization by user ID list."""
         org = self._session.get(OrganizationEntity, organization_id)
         if not org:
@@ -258,7 +257,7 @@ class OrganizationService:
         self._session.commit()
         return org_entity.to_model()
 
-    def get_advisor_by_organization(self, organization_id: int) -> User | None:
+    def get_organization_advisor(self, organization_id: int) -> User | None:
         """Retrieve the advisor of a specific organization."""
         org_entity = self._session.get(OrganizationEntity, organization_id)
         if not org_entity:
@@ -284,7 +283,7 @@ class OrganizationService:
         if not user:
             raise ResourceNotFoundException(f"User with ID {user_id} not found.")
 
-        org_entity.advisor = user
+        org_entity.advisor = user.id
         self._session.commit()
         self._session.refresh(org_entity)
         return org_entity.to_model()
@@ -304,4 +303,4 @@ class OrganizationService:
         
         org_entity.advisor = None
         self._session.commit()
-        return f"Advisor removed from organization with ID {organization_id}."
+        return org_entity.to_model()

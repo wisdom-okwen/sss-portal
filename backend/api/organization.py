@@ -5,7 +5,7 @@ from backend.services.organization import OrganizationService
 from backend.models.organization import Organization
 from backend.database import db_session
 
-api = APIRouter(prefix="/api/organizations")
+api = APIRouter(prefix="/api/organization")
 openapi_tags = {
     "name": "Organizations",
     "description": "Organization management and related operations.",
@@ -141,7 +141,7 @@ def get_organizations_by_user(
     response_model=list[Organization],
     tags=["Organizations"],
 )
-def get_members_by_organization(
+def get_organization_members(
     organization_id: int, db: Session = Depends(db_session)
 ) -> list[User]:
     """
@@ -154,7 +154,7 @@ def get_members_by_organization(
     Returns:
         list[User]: List of `User`s who are members of the organization
     """
-    return OrganizationService(db).get_members_by_organization(organization_id)
+    return OrganizationService(db).get_organization_members(organization_id)
 
 
 @api.post(
@@ -201,10 +201,10 @@ def remove_member_from_organization(
 
 @api.get(
     "/{organization_id}/admins",
-    response_model=list[Organization],
+    response_model=list[User],
     tags=["Organizations"],
 )
-def get_admins_by_organization(
+def get_org_admins(
     organization_id: int, db: Session = Depends(db_session)
 ) -> list[User]:
     """
@@ -217,7 +217,7 @@ def get_admins_by_organization(
     Returns:
         list[User]: List of `User`s who are admins in the organization
     """
-    return OrganizationService(db).get_admins_by_organization(organization_id)
+    return OrganizationService(db).get_org_admins(organization_id)
 
 
 @api.post(
@@ -265,7 +265,7 @@ def remove_admin_from_organization(
     response_model=list[User],
     tags=["Organizations"],
 )
-def get_teachers_by_organization(
+def get_org_teachers(
     organization_id: int, db: Session = Depends(db_session)
 ) -> list[User]:
     """
@@ -278,7 +278,7 @@ def get_teachers_by_organization(
     Returns:
         list[User]: List of `User`s who are teachers in the organization
     """
-    return OrganizationService(db).get_teachers_by_organization(organization_id)
+    return OrganizationService(db).get_org_teachers(organization_id)
 
 @api.post(
     "/{organization_id}/teachers", response_model=Organization, tags=["Organizations"]
@@ -301,9 +301,9 @@ def add_teacher_to_organization(
 
 
 @api.get(
-    "/{organization_id}/advisor", response_model=Organization, tags=["Organizations"]
+    "/{organization_id}/advisor", response_model=User, tags=["Organizations"]
 )
-def get_advisor_by_organization(
+def get_organization_advisor(
     organization_id: int, db: Session = Depends(db_session)
 ) -> User | None:
     """
@@ -316,7 +316,7 @@ def get_advisor_by_organization(
     Returns:
         User | None: The `User` who is the advisor, or None if not found
     """
-    return OrganizationService(db).get_advisor_by_organization(organization_id)
+    return OrganizationService(db).get_organization_advisor(organization_id)
 
 
 @api.post(
@@ -351,6 +351,6 @@ def remove_advisor_from_organization(
         db: Database session
 
     Returns:
-        bool: True if removal was successful, False otherwise
+        Organization: The updated `Organization` without the advisor
     """
     return OrganizationService(db).remove_advisor_from_organization(organization_id)

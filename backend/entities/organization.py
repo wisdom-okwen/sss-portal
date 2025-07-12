@@ -11,7 +11,7 @@ class OrganizationEntity(EntityBase):
     # Entity for organization table
     __tablename__ = "organization"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, auto_increment=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     slug: Mapped[str] = mapped_column(String, unique=True, nullable=False) # Abbreviation or shortname
     description: Mapped[str] = mapped_column(String, nullable=True)
