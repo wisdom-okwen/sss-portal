@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from ..services.user import UserService
-from ..models.user import User
+from ..models.user import User, UserUpdate
+from ..models.auth import NewUser
 from ..utility.shared_enum import UserType
 
 
@@ -74,7 +75,7 @@ def get_by_email(email: str, user_service: UserService = Depends()) -> User:
 
 
 @api.post("/", response_model=User, tags=["Users"])
-def add_user(user: User, user_service: UserService = Depends()) -> User:
+def add_user(user: NewUser, user_service: UserService = Depends()) -> User:
     """
     Add  a new user
 
@@ -92,7 +93,7 @@ def add_user(user: User, user_service: UserService = Depends()) -> User:
 @api.put("/{user_id}", responses={404: {"model": None}}, response_model=User, tags=["Users"])
 def update_user(
     user_id: int,
-    user: User,
+    user: UserUpdate,
     user_service: UserService = Depends()
 ):
     """
