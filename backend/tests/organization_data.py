@@ -23,7 +23,7 @@ debate = Organization(
 )
 
 science_and_math = Organization(
-    id="2",
+    id=2,
     name="Science Club",
     slug="smc",
     description="A club for science enthusiasts.",
