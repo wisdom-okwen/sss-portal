@@ -6,15 +6,14 @@ Three users are setup for testing and development purposes:
 
 import pytest
 from sqlalchemy.orm import Session
-from ..models.user import User
+from ..models.auth import NewUser
 from ..entities.user import UserEntity
-from .reset_table_id_sequence import reset_table_id_seq
+# from .reset_table_id_sequence import reset_table_id_seq
 from ..utility.shared_enum import UserType
 
 
 
-evan = User(
-    id=1,
+evan = NewUser(
     first_name="Evan",
     last_name="Explorer",
     middle_name="E.",
@@ -23,8 +22,7 @@ evan = User(
     user_type=UserType.student
 )
 
-harry = User(
-    id=2,
+harry = NewUser(
     first_name="Harry",
     last_name="Helper",
     middle_name="H.",
@@ -33,8 +31,7 @@ harry = User(
     user_type=UserType.guardian
 )
 
-armstrong = User(
-    id=3,
+armstrong = NewUser(
     first_name="Armstrong",
     last_name="Allen",
     middle_name="A.",
@@ -43,8 +40,7 @@ armstrong = User(
     user_type=UserType.administrator
 )
 
-isaac = User(
-    id=4,
+isaac = NewUser(
     first_name="Isaac",
     last_name="Israel",
     middle_name="I.",
@@ -57,13 +53,15 @@ users = [evan, harry, armstrong, isaac]
 
 def insert_fake_data(session: Session):
     global users
-    entities = []
+    entities: list[UserEntity] = []
     for user in users:
-        print("Entities: ", entities)
         entity = UserEntity.from_model(user)
         session.add(entity)
         entities.append(entity)
-    reset_table_id_seq(session, UserEntity, UserEntity.id, len(users) + 1)
+    
+    print("Entities: ", entities)
+    # we'll not need to reset this anymore
+    # reset_table_id_seq(session, UserEntity, UserEntity.id, len(users) + 1)
     session.commit()  # Commit to ensure User IDs in database
 
 @pytest.fixture(autouse=True)
