@@ -1,8 +1,7 @@
 """Entrypoint of backend API exposing the FastAPI `app` to be served by an application server such as uvicorn."""
 
-from .api.user import api as user_api
 from pathlib import Path
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -14,6 +13,7 @@ from backend.services.exceptions import (
 
 
 from .api import (
+    auth,
     user,
     static_files,
 )
@@ -53,7 +53,7 @@ app.add_middleware(
 
 
 # Plugging in each of the router APIs
-feature_apis = [user]
+feature_apis = [auth, user]
 
 for feature_api in feature_apis:
     app.include_router(feature_api.api)
@@ -90,6 +90,3 @@ async def resource_exists_exception_handler(
         status_code=409,
         content={"detail": str(exc)},
     )
-
-
-app.include_router(user_api)
