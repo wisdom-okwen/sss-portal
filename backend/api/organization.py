@@ -138,7 +138,7 @@ def get_organizations_by_user(
 
 @api.get(
     "/{organization_id}/members",
-    response_model=list[Organization],
+    response_model=list[User],
     tags=["Organizations"],
 )
 def get_organization_members(
@@ -178,7 +178,7 @@ def add_member_to_organization(
 
 
 @api.delete(
-    "/{organization_id}/members/{user_id}", response_model=bool, tags=["Organizations"]
+    "/{organization_id}/members/{user_id}", response_model=Organization, tags=["Organizations"]
 )
 def remove_member_from_organization(
     organization_id: int, user_id: int, db: Session = Depends(db_session)
@@ -240,7 +240,7 @@ def add_admin_to_organization(
     return OrganizationService(db).add_admin_to_organization(organization_id, user_id)
 
 @api.delete(
-    "/{organization_id}/admins/{user_id}", response_model=bool, tags=["Organizations"]
+    "/{organization_id}/admins/{user_id}", response_model=Organization, tags=["Organizations"]
 )
 def remove_admin_from_organization(
     organization_id: int, user_id: int, db: Session = Depends(db_session)
@@ -339,7 +339,7 @@ def set_advisor_for_organization(
     return OrganizationService(db).set_advisor_for_organization(organization_id, user_id)
 
 
-@api.delete("/{organization_id}/advisor", response_model=bool, tags=["Organizations"])
+@api.delete("/{organization_id}/advisor", response_model=Organization, tags=["Organizations"])
 def remove_advisor_from_organization(
     organization_id: int, db: Session = Depends(db_session)
 ) -> Organization:
