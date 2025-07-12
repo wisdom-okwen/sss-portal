@@ -59,7 +59,7 @@ robotics = Organization(
 )
 
 basketball = Organization(
-    id="5",
+    id=5,
     name="Basketball Team",
     slug="basketball_team",
     description="A team for basketball players.",
