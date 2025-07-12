@@ -47,7 +47,7 @@ scripture_union = Organization(
 )
 
 robotics = Organization(
-    id="4",
+    id=4,
     name="Robotics Club",
     slug="robotics_club",
     description="A club for robotics enthusiasts.",
