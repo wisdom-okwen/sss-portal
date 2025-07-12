@@ -159,15 +159,20 @@ class CourseService:
             self._session.query(CourseEntity)
             .where(
                 (CourseEntity.course_name == course.course_name)
-                & (CourseEntity.course_code == course.course_code)
+                | (CourseEntity.course_code == course.course_code)
             )
             .one_or_none()
         )
 
         if existing_course:
-            raise ResourceExistsException(
-                f"Course with name '{course.course_name}' already exists."
-            )
+            if existing_course.course_name == course.course_name:
+                raise ResourceExistsException(
+                    f"Course with name '{course.course_name}' already exists."
+                )
+            if existing_course.course_code == course.course_code:
+                raise ResourceExistsException(
+                    f"Course with code '{course.course_code}' already exists."
+                )
 
         user_service = UserService(self._session)
         lecturer = user_service.get_user(course.course_lecturer)
