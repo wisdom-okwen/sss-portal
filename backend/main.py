@@ -1,9 +1,7 @@
 """Entrypoint of backend API exposing the FastAPI `app` to be served by an application server such as uvicorn."""
 
-from .api.user import api as user_api
-from .api.course import api as course_api
 from pathlib import Path
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -12,32 +10,24 @@ from backend.services.exceptions import (
     UserPermissionException,
     ResourceExistsException,
 )
-from sqlalchemy import inspect
 from backend.database import Base, engine
-from backend.db import User, Course
+from .api import user, static_files, course, organization
 
 Base.metadata.create_all(bind=engine)
-
-from .api import (
-    user,
-    static_files,
-    course,
-)
 
 description = """
 Welcome to the **Secondary School Portal** RESTful Application Programming Interface.
 """
+
+# Plugging in each of the router APIs
+feature_apis = [user, course, organization]
 
 # Metadata to improve the usefulness of OpenAPI Docs /docs API Explorer
 app = FastAPI(
     title="Senior Secondary School (SSS) Portal",
     version="0.0.1",
     description=description,
-    openapi_tags=[
-        user.openapi_tags,
-        # post.openapi_tags,
-        # google_auth.openapi_tags
-    ],
+    openapi_tags=[feature_api.openapi_tags for feature_api in feature_apis],
 )
 
 # Use GZip middleware for compressing HTML responses over the network
@@ -56,10 +46,6 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
-
-
-# Plugging in each of the router APIs
-feature_apis = [user, course]
 
 for feature_api in feature_apis:
     app.include_router(feature_api.api)
