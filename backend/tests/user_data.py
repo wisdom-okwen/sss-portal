@@ -12,6 +12,14 @@ from ..entities.user import UserEntity
 from ..utility.shared_enum import UserType
 
 
+amy = NewUser(
+    first_name="Amy",
+    last_name="Adams",
+    middle_name="A.",
+    email="amyadams@gmail.com",
+    password="amyadams",
+    user_type=UserType.student
+)
 
 evan = NewUser(
     first_name="Evan",
@@ -28,6 +36,15 @@ harry = NewUser(
     middle_name="H.",
     email="harryhelper@gmail.com",
     password='password',
+    user_type=UserType.guardian
+)
+
+rhonda = NewUser(
+    first_name="Rhonda",
+    last_name="Rhodes",
+    middle_name="R.",
+    email="rhondarhodes@gmail.com",
+    password="rhondarhodes",
     user_type=UserType.guardian
 )
 
@@ -49,23 +66,65 @@ isaac = NewUser(
     user_type=UserType.teacher
 )
 
-users = [evan, harry, armstrong, isaac]
+prince = NewUser(
+    first_name="Prince",
+    last_name="Peters",
+    middle_name="P.",
+    email="princepeters@gmail.com",
+    password="princepeters",
+    user_type=UserType.student
+)
+
+wisdom = NewUser(
+    first_name="Wisdom",
+    last_name="Wright",
+    middle_name="W.",
+    email="wisdomwright@gmail.com",
+    password="wisdomwright",
+    user_type=UserType.student
+)
+
+daisy = NewUser(
+    first_name="Daisy",
+    last_name="Doe",
+    middle_name="D.",
+    email="daisyd@gmail.com",
+    password="daisyd",
+    user_type=UserType.administrator
+)
+
+samuel = NewUser(
+    first_name="Samuel",
+    last_name="Smith",
+    middle_name="S.",
+    email="samuel@gmail.com",
+    password="samuel",
+    user_type=UserType.teacher
+)
+
+users = [
+    amy,
+    daisy,
+    evan,
+    harry,
+    armstrong,
+    isaac,
+    prince,
+    wisdom,
+    samuel,
+    rhonda
+]
 
 def insert_fake_data(session: Session):
+    """Inserts fake user data into the database."""
     global users
-    entities: list[UserEntity] = []
     for user in users:
         entity = UserEntity.from_model(user)
         session.add(entity)
-        entities.append(entity)
-    
-    print("Entities: ", entities)
-    # we'll not need to reset this anymore
-    # reset_table_id_seq(session, UserEntity, UserEntity.id, len(users) + 1)
-    session.commit()  # Commit to ensure User IDs in database
+    session.commit()
 
 @pytest.fixture(autouse=True)
 def fake_data_fixture(session: Session):
+    """Pytest fixture to insert fake data automatically."""
     insert_fake_data(session)
-    session.commit()
     yield

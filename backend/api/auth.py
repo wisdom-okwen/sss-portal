@@ -147,30 +147,7 @@ def get_me(current_user: User = Depends(get_current_user)) -> User:
 
 
 @api.post("/google", response_model=AuthResponse, tags=["Authentication"])
-def login_google(
-    auth_service: AuthService = Depends()
-) -> AuthResponse:
-    """
-    Login with Google OAuth.
-    
-    NOTE: This endpoint is a placeholder and will be implemented later.
-    It should handle Google OAuth token verification and user registration/login.
-
-    Parameters:
-        auth_service: Authentication service dependency
-
-    Returns:
-        AuthResponse: Access token and user information
-    """
-    # This will be implemented later with Google OAuth integration
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Google OAuth login not yet implemented"
-    )
-
-
-@api.post("/google/callback", response_model=AuthResponse, tags=["Authentication"])
-def google_callback(
+def auth_google(
     auth_service: AuthService = Depends()
 ) -> AuthResponse:
     """

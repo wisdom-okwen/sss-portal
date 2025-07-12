@@ -18,7 +18,7 @@ class FromModel(Protocol):
 class UserEntity(EntityBase):
     # Entity for user table
     __tablename__ = "user"
-    
+
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     first_name: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     last_name: Mapped[str] = mapped_column(String(64), nullable=False, default="")
@@ -36,7 +36,7 @@ class UserEntity(EntityBase):
             last_name=self.last_name,
             middle_name=self.middle_name,
             email=self.email,
-            user_type=self.user_type
+            user_type=self.user_type,
         )
 
     @classmethod
@@ -47,5 +47,5 @@ class UserEntity(EntityBase):
             last_name=model.last_name,
             middle_name=model.middle_name,
             email=model.email,
-            user_type=model.user_type
+            user_type=model.user_type,
         )
