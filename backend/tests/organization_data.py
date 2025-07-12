@@ -84,7 +84,7 @@ acapella = Organization(
 )
 
 school_choir = Organization(
-    id="7",
+    id=7,
     name="School Choir",
     slug="school_choir",
     description="A choir for school students.",
