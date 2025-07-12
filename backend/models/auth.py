@@ -36,3 +36,6 @@ class MessageResponse(BaseModel):
 class AuthResponse(BaseModel):
     access_token: str
     user: User
+
+class Token(BaseModel):
+    token: str

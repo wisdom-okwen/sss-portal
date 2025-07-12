@@ -11,6 +11,7 @@ from ..models.auth import (
     ResetPassword,
     AuthResponse,
     MessageResponse,
+    Token
 )
 from ..models.user import User
 from ..utility.security import verify_token
@@ -146,24 +147,15 @@ def get_me(current_user: User = Depends(get_current_user)) -> User:
     return current_user
 
 
-@api.post("/google", response_model=AuthResponse, tags=["Authentication"])
-def auth_google(
-    auth_service: AuthService = Depends()
+@api.post("/google", response_model=Token, tags=["Authentication"])
+def google_login(
+    token: Token, auth_service: AuthService = Depends()
 ) -> AuthResponse:
     """
-    Login with Google OAuth.
-    
-    NOTE: This endpoint is a placeholder and will be implemented later.
-    It should handle Google OAuth token verification and user registration/login.
-
-    Parameters:
-        auth_service: Authentication service dependency
-
-    Returns:
-        AuthResponse: Access token and user information
+    Handles login via Google's OAuth.
+    The frontend should send the ID token from Google.
     """
-    # This will be implemented later with Google OAuth integration
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Google OAuth login not yet implemented"
-    )
+    try:
+        return auth_service.google_login(token.token)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

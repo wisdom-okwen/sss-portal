@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from datetime import datetime, timedelta, timezone
 
+from google.oauth2.id_token import verify_oauth2_token # type: ignore
+from google.auth.transport import requests
+
 from ..database import db_session
 from ..entities.user import UserEntity
 from ..entities.otp import OTPEntity
@@ -20,6 +23,10 @@ from .exceptions import (
     ResourceNotFoundException,
     ResourceExistsException,
 )
+
+from ..env import getenv
+
+GOOGLE_CLIENT_ID = getenv("GOOGLE_CLIENT_ID")
 
 
 class AuthService:
@@ -180,40 +187,52 @@ class AuthService:
             user=user.to_model()
         )
 
-    def register_google_user(self, email: str, first_name: str, last_name: str) -> AuthResponse:
-        """Register user via Google OAuth if email is new."""
-        # Check if user already exists
+    def google_login(self, google_token: str) -> AuthResponse:
+        """
+        Handles the Google login flow by registering or logging in a user.
+
+        Args:
+            google_token: The ID token received from Google.
+
+        Returns:
+            An AuthResponse containing the user model and a JWT access token.
+        """
+        try:
+            id_info = verify_oauth2_token(
+                google_token, requests.Request(), GOOGLE_CLIENT_ID
+            )
+            email = id_info["email"]
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Google token"
+            )
+
         existing_user = self._session.query(UserEntity).filter(
             UserEntity.email == email
         ).first()
-        
+
         if existing_user:
-            # User exists, just log them in
             access_token = create_access_token(existing_user.to_model())
-            
             return AuthResponse(
                 access_token=access_token,
                 user=existing_user.to_model()
             )
-        
-        # Create new user with Google info
-        user_entity = UserEntity(
-            first_name=first_name,
-            last_name=last_name,
-            middle_name="",
+
+        new_user = UserEntity(
+            first_name=id_info.get("given_name", ""),
+            last_name=id_info.get("family_name", ""),
             email=email,
-            password="",  # No password for Google users
-            user_type=UserType.student  # Default to student
+            password="",
         )
-        
-        self._session.add(user_entity)
+
+        self._session.add(new_user)
         self._session.commit()
-        self._session.refresh(user_entity)
-        
-        # Generate access token
-        access_token = create_access_token(user_entity.to_model())
-        
+        self._session.refresh(new_user)
+
+        access_token = create_access_token(new_user.to_model())
+
         return AuthResponse(
             access_token=access_token,
-            user=user_entity.to_model()
+            user=new_user.to_model()
         )
