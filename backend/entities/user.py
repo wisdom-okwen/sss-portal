@@ -4,6 +4,15 @@ from sqlalchemy.orm import Mapped, mapped_column
 from .base_entity import EntityBase
 from backend.models.user import User
 from ..utility.shared_enum import UserType
+from typing import Protocol
+
+class FromModel(Protocol):
+    first_name: str
+    last_name: str
+    middle_name: str = ''
+    email: str
+    password: str
+    user_type: UserType
 
 
 class UserEntity(EntityBase):
@@ -15,7 +24,7 @@ class UserEntity(EntityBase):
     last_name: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     middle_name: Mapped[str] = mapped_column(String(64), nullable=True)
     email: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, default="")
-    password: Mapped[str] = mapped_column(String(64), nullable=False, default="")
+    password: Mapped[str] = mapped_column(String(255), nullable=False, default="")
     user_type: Mapped[UserType] = mapped_column(Enum(UserType), nullable=False, default=UserType.other)
     
 
@@ -31,10 +40,9 @@ class UserEntity(EntityBase):
         )
 
     @classmethod
-    def from_model(cls, model: User) -> Self:
+    def from_model(cls, model: FromModel) -> Self:
         """Create an entity from corresponding pydantic model."""
         return cls(
-            id=model.id,
             first_name=model.first_name,
             last_name=model.last_name,
             middle_name=model.middle_name,
