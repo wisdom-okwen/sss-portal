@@ -11,7 +11,7 @@ from ..utility.shared_enum import OrganizationType
 from .user_data import amy, evan, armstrong, wisdom, prince, samuel
 
 debate = Organization(
-    id="1",
+    id=1,
     name="Debate Club",
     slug="debate_club",
     description="A club for debating various topics.",
