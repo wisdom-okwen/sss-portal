@@ -9,7 +9,8 @@ from sqlalchemy.exc import OperationalError, ProgrammingError
 from ..database import _engine_str
 from ..env import getenv
 from .. import entities
-from . import user_data, organization_data
+from . import user_data
+from . import course_data  # <-- Add this import
 
 
 POSTGRES_DATABASE = f'{getenv("POSTGRES_DATABASE")}_test'
@@ -59,6 +60,6 @@ def session(test_engine: Engine):
 @pytest.fixture(autouse=True)
 def setup_insert_data_fixture(session: Session):
     user_data.insert_fake_data(session)
-    organization_data.insert_fake_data(session)
+    course_data.insert_fake_course_data(session)  # <-- Register course test data here
     session.commit()
     yield

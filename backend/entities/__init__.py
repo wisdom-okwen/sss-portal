@@ -1,3 +1,3 @@
 from .base_entity import EntityBase
 from .user import UserEntity
-from .organization import OrganizationEntity
+from .course import CourseEntity

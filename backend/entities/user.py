@@ -1,6 +1,6 @@
 from typing import Self
 from sqlalchemy import String, Integer, Enum
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from .base_entity import EntityBase
 from backend.models.user import User
 from ..utility.shared_enum import UserType
@@ -10,7 +10,7 @@ class UserEntity(EntityBase):
     # Entity for user table
     __tablename__ = "user"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True, index=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     first_name: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     last_name: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     middle_name: Mapped[str] = mapped_column(String(64), nullable=True)
