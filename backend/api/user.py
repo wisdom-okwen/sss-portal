@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from ..services.user import UserService
-from ..models.user import User
+from backend.models.user import User
 from ..utility.shared_enum import UserType
 
 

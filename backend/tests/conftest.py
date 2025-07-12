@@ -9,7 +9,7 @@ from sqlalchemy.exc import OperationalError, ProgrammingError
 from ..database import _engine_str
 from ..env import getenv
 from .. import entities
-from . import user_data
+from . import user_data, organization_data
 
 
 POSTGRES_DATABASE = f'{getenv("POSTGRES_DATABASE")}_test'
@@ -59,5 +59,6 @@ def session(test_engine: Engine):
 @pytest.fixture(autouse=True)
 def setup_insert_data_fixture(session: Session):
     user_data.insert_fake_data(session)
+    organization_data.insert_fake_data(session)
     session.commit()
     yield
