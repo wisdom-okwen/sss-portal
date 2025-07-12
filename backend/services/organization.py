@@ -224,7 +224,9 @@ class OrganizationService:
         """Add an admin to an organization by appending user ID to admin_ids array."""
         org_entity = self._session.get(OrganizationEntity, organization_id)
         if not org_entity:
-            raise ResourceNotFoundException("Organization not found")
+            raise ResourceNotFoundException(
+                f"Organization with ID {organization_id} not found."
+            )
 
         user = self._session.get(UserEntity, user_id)
         if not user:
