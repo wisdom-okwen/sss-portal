@@ -72,7 +72,7 @@ basketball = Organization(
 
 
 acapella = Organization(
-    id="6",
+    id=6,
     name="Acapella Group",
     slug="acapella_group",
     description="A group for acapella singers.",
