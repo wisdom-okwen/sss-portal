@@ -5,6 +5,10 @@ from ..services.course import CourseService
 from ..services.exceptions import ResourceNotFoundException, ResourceExistsException
 
 api = APIRouter(prefix="/api/courses", tags=["Courses"])
+openapi_tags = {
+    "name": "Courses",
+    "description": "Course management and related operations.",
+}
 
 
 @api.get("", response_model=List[Course])
