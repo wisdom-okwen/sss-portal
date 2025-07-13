@@ -127,13 +127,24 @@ def _send_email(email: str, subject: str, html_body: str) -> bool:
         message.attach(MIMEText(html_body, "html"))
 
         # Send email
-        with smtplib.SMTP_SSL(smtp_server, smtp_port) as server: # Using SMTP_SSL for security
-            server.login(smtp_username, smtp_password)
-            server.send_message(message)
+        if smtp_port == 587:
+            with smtplib.SMTP(smtp_server, smtp_port) as server:
+                server.starttls()
+                # TODO: use a global configuration setup and login once only
+                server.login(smtp_username, smtp_password)
+                server.send_message(message)
+        elif smtp_port == 465:
+            with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
+                server.login(smtp_username, smtp_password)
+                server.send_message(message)
+        else:
+            # TODO: Refactor port checks into global config or an Environment singleton
+            print(f"Unsupported port in env")
+            return False
 
         return True
     except Exception as e:
-        # In a real app, you would use a proper logger instead of print
+        # Placeholder logging utility
         print(f"Error sending email: {e}")
         return False
 

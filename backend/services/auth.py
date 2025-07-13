@@ -41,7 +41,7 @@ class AuthService:
         otp = generate_otp()
         success = send_verification_email(email, otp)
         if success:
-            return MessageResponse(message="An verification code has been sent to your email")
+            return MessageResponse(message="A verification code has been sent to your email")
         else:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

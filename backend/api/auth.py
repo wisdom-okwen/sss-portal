@@ -111,7 +111,7 @@ def get_me(current_user: User = Depends(get_current_user)) -> User:
     return current_user
 
 
-@api.post("/google", response_model=Token, tags=["Authentication"])
+@api.post("/google", response_model=AuthResponse, tags=["Authentication"])
 def google_login(
     token: Token, auth_service: AuthService = Depends()
 ) -> AuthResponse:
