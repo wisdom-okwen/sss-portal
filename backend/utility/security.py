@@ -9,6 +9,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from ..models.user import User
 
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
 # Password Hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -17,6 +20,7 @@ SECRET_KEY = getenv("JWT_SECRET")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+security = HTTPBearer()
 
 def hash_password(password: str) -> str:
     """Hashes a plain-text password using bcrypt."""
@@ -42,7 +46,7 @@ def create_access_token(user: User, expires_delta: Optional[timedelta] = None) -
     """
     
     expire = datetime.now(timezone.utc) + expires_delta if expires_delta else timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode: Dict[str, Any] = { "sub": user.email, "exp": expire }
+    to_encode: Dict[str, Any] = { "sub": user.model_dump_json(), "exp": expire }
 
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -160,3 +164,37 @@ def send_verify_email_email(email: str, code: str) -> bool:
     """
     html_body = _create_html_email_body(title, content_html)
     return _send_email(email, subject, html_body)
+
+
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+) -> User:
+    """Get current authenticated user from JWT token."""
+    try:
+        token = credentials.credentials
+        payload = verify_token(token)
+        
+        if payload is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        user_json = payload.get("sub")
+        if user_json is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        user = User.model_validate_json(user_json)
+
+        return user
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
