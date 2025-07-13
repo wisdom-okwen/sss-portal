@@ -45,7 +45,7 @@ def create_access_token(user: User, expires_delta: Optional[timedelta] = None) -
         The encoded JWT access token as a string.
     """
     
-    expire = datetime.now(timezone.utc) + expires_delta if expires_delta else timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.now(timezone.utc) + (expires_delta if expires_delta else timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode: Dict[str, Any] = { "sub": user.model_dump_json(), "exp": expire }
 
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
