@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPBearer
 
 from ..services.auth import AuthService
-from ..services.user import UserService
 
 from ..models.auth import (
     UserRegister,
@@ -14,7 +13,7 @@ from ..models.auth import (
     Token
 )
 from ..models.user import User
-from ..utility.security import verify_token
+from ..utility.security import get_current_user
 
 
 api = APIRouter(prefix="/api/auth")
@@ -24,41 +23,6 @@ openapi_tags = {
     "name": "Authentication",
     "description": "User authentication, registration, and password reset operations.",
 }
-
-
-def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    user_service: UserService = Depends(),
-) -> User:
-    """Get current authenticated user from JWT token."""
-    try:
-        token = credentials.credentials
-        payload = verify_token(token)
-        
-        if payload is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid authentication credentials",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        
-        email = payload.get("sub")
-        if email is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid authentication credentials",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        
-        user = user_service.get_by_email(email)
-
-        return user
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
 
 
 @api.post("/register", response_model=AuthResponse, tags=["Authentication"])
