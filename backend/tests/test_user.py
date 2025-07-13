@@ -8,7 +8,7 @@ from backend.models.user import UserUpdate
 from backend.services import UserService
 from backend.services.exceptions import ResourceNotFoundException
 
-# from backend.tests.fixtures import user_svc, user_svc_integration
+from backend.tests.fixtures import user_svc, user_svc_integration
 
 # # Data Models for Fake Data Inserted in Setup
 # from backend.tests.user_data import evan, harry

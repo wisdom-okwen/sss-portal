@@ -16,7 +16,7 @@ from ..utility.security import (
     create_access_token,
     generate_otp,
     send_forgot_password_email,
-    send_verify_email_email,
+    send_verification_email,
 )
 from ..utility.shared_enum import UserType
 from .exceptions import (
@@ -39,7 +39,7 @@ class AuthService:
 
     def verify_email(self, email: str) -> MessageResponse:
         otp = generate_otp()
-        success = send_verify_email_email(email, otp)
+        success = send_verification_email(email, otp)
         if success:
             return MessageResponse(message="An verification code has been sent to your email")
         else:

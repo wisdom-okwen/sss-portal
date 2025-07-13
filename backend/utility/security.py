@@ -152,7 +152,7 @@ def send_forgot_password_email(email: str, otp: str) -> bool:
     return _send_email(email, subject, html_body)
 
 
-def send_verify_email_email(email: str, code: str) -> bool:
+def send_verification_email(email: str, code: str) -> bool:
     """Send verification code to user's email for account activation."""
     subject = "Verify Your Email Address - SSS Portal"
     title = "Email Verification"
