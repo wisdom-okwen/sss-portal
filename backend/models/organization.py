@@ -1,6 +1,4 @@
 from pydantic import BaseModel
-from backend.models.user import User
-from enum import Enum
 from backend.utility.shared_enum import OrganizationType
 
 

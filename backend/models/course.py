@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import List
 from datetime import time
-from ..models.user import User
 
 
 class CourseTime(BaseModel):

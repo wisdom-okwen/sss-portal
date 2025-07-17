@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING, Self
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import Self
+from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, ForeignKey, Enum, Integer
 from sqlalchemy.dialects.postgresql import ARRAY
 from backend.models.organization import Organization

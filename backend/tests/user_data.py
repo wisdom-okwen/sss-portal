@@ -6,14 +6,13 @@ Three users are setup for testing and development purposes:
 
 import pytest
 from sqlalchemy.orm import Session
-from ..models.user import User
+from ..models.auth import NewUser
 from ..entities.user import UserEntity
-from .reset_table_id_sequence import reset_table_id_seq
+# from .reset_table_id_sequence import reset_table_id_seq
 from ..utility.shared_enum import UserType
 
 
-amy = User(    
-    id=0,
+amy = NewUser(
     first_name="Amy",
     last_name="Adams",
     middle_name="A.",
@@ -22,8 +21,7 @@ amy = User(
     user_type=UserType.student
 )
 
-evan = User(
-    id=1,
+evan = NewUser(
     first_name="Evan",
     last_name="Explorer",
     middle_name="E.",
@@ -32,8 +30,7 @@ evan = User(
     user_type=UserType.student
 )
 
-harry = User(
-    id=2,
+harry = NewUser(
     first_name="Harry",
     last_name="Helper",
     middle_name="H.",
@@ -42,8 +39,7 @@ harry = User(
     user_type=UserType.guardian
 )
 
-rhonda = User(
-    id=3,
+rhonda = NewUser(
     first_name="Rhonda",
     last_name="Rhodes",
     middle_name="R.",
@@ -52,8 +48,7 @@ rhonda = User(
     user_type=UserType.guardian
 )
 
-armstrong = User(
-    id=9,
+armstrong = NewUser(
     first_name="Armstrong",
     last_name="Allen",
     middle_name="A.",
@@ -62,8 +57,7 @@ armstrong = User(
     user_type=UserType.administrator
 )
 
-isaac = User(
-    id=4,
+isaac = NewUser(
     first_name="Isaac",
     last_name="Israel",
     middle_name="I.",
@@ -72,8 +66,7 @@ isaac = User(
     user_type=UserType.teacher
 )
 
-prince = User(
-    id=5,
+prince = NewUser(
     first_name="Prince",
     last_name="Peters",
     middle_name="P.",
@@ -82,8 +75,7 @@ prince = User(
     user_type=UserType.student
 )
 
-wisdom = User(
-    id=6,
+wisdom = NewUser(
     first_name="Wisdom",
     last_name="Wright",
     middle_name="W.",
@@ -92,8 +84,7 @@ wisdom = User(
     user_type=UserType.student
 )
 
-daisy = User(
-    id=7,
+daisy = NewUser(
     first_name="Daisy",
     last_name="Doe",
     middle_name="D.",
@@ -102,8 +93,7 @@ daisy = User(
     user_type=UserType.administrator
 )
 
-samuel = User(
-    id=8,
+samuel = NewUser(
     first_name="Samuel",
     last_name="Smith",
     middle_name="S.",
@@ -113,31 +103,28 @@ samuel = User(
 )
 
 users = [
-    amy, 
-    daisy, 
-    evan, 
-    harry, 
-    armstrong, 
-    isaac, 
-    prince, 
-    wisdom, 
-    samuel, 
+    amy,
+    daisy,
+    evan,
+    harry,
+    armstrong,
+    isaac,
+    prince,
+    wisdom,
+    samuel,
     rhonda
 ]
 
 def insert_fake_data(session: Session):
+    """Inserts fake user data into the database."""
     global users
-    entities = []
     for user in users:
-        print("Entities: ", entities)
         entity = UserEntity.from_model(user)
         session.add(entity)
-        entities.append(entity)
-    reset_table_id_seq(session, UserEntity, UserEntity.id, len(users) + 1)
-    session.commit()  # Commit to ensure User IDs in database
+    session.commit()
 
 @pytest.fixture(autouse=True)
 def fake_data_fixture(session: Session):
+    """Pytest fixture to insert fake data automatically."""
     insert_fake_data(session)
-    session.commit()
     yield

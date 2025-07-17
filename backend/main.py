@@ -11,7 +11,7 @@ from backend.services.exceptions import (
     ResourceExistsException,
 )
 from backend.database import Base, engine
-from .api import user, static_files, course, organization
+from .api import auth, user, static_files, course, organization
 
 Base.metadata.create_all(bind=engine)
 
@@ -20,7 +20,7 @@ Welcome to the **Secondary School Portal** RESTful Application Programming Inter
 """
 
 # Plugging in each of the router APIs
-feature_apis = [user, course, organization]
+feature_apis = [auth, user, course, organization]
 
 # Metadata to improve the usefulness of OpenAPI Docs /docs API Explorer
 app = FastAPI(
@@ -82,6 +82,3 @@ async def resource_exists_exception_handler(
         status_code=409,
         content={"detail": str(exc)},
     )
-
-
-Base.metadata.create_all(bind=engine)

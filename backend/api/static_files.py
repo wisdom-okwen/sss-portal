@@ -11,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 
 
 class StaticFileMiddleware(StaticFiles):
-    def __init__(self, directory: os.PathLike, index: str = "index.html") -> None:
+    def __init__(self, directory: os.PathLike[str], index: str = "index.html") -> None:
         self.index = index
         super().__init__(directory=directory, packages=None, html=True, check_dir=True)
 

@@ -1,4 +1,4 @@
-from sqlalchemy import String, Integer, Enum, ForeignKey
+from sqlalchemy import String, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from .base_entity import EntityBase
 from backend.models.course import Course
