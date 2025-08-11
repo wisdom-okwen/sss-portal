@@ -10,7 +10,7 @@ export async function login(email, password) {
   } catch (e) {
     return { success: false, error: "Invalid server response" };
   }
-  if (response.ok && data.access_token) {
+  if (response.ok && data.access_token && isValidJWT(data.access_token)) {
     localStorage.setItem("access_token", data.access_token);
     return { success: true, user: data.user };
   } else {
