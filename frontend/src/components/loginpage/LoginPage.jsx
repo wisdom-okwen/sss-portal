@@ -5,12 +5,18 @@ import { FaGoogle, FaFacebookF, FaTwitter, FaApple } from 'react-icons/fa';
 import { login } from '../../utils/auth';
 import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
+// MUI icon for password visibility
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,12 +50,13 @@ const LoginPage = () => {
     }
   };
 
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
   return (
     <div className="login-page-split">
       <div className="login-image" />
       <div className="login-form-container">
         <div className="login-card">
-          {/* Modern error alert at the top of the sign-in box */}
           <Collapse in={showError}>
             <Alert
               severity="error"
@@ -83,9 +90,9 @@ const LoginPage = () => {
               />
               <label htmlFor="email" className="floating-label">Email</label>
             </div>
-            <div className="form-group floating-label-group">
+            <div className="form-group floating-label-group" style={{ position: "relative" }}>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 required
@@ -94,8 +101,26 @@ const LoginPage = () => {
                 placeholder=" "
                 value={password}
                 onChange={e => setPassword(e.target.value)}
+                style={{ paddingRight: "40px" }}
               />
               <label htmlFor="password" className="floating-label">Password</label>
+              <IconButton
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={handleClickShowPassword}
+                edge="end"
+                size="small"
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  zIndex: 2,
+                  color: "#888"
+                }}
+                tabIndex={-1}
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
             </div>
             <div className="login-options">
               <label className="remember-me">
