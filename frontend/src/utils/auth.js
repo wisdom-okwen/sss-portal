@@ -4,7 +4,12 @@ export async function login(email, password) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  const data = await response.json();
+  let data;
+  try {
+    data = await response.json();
+  } catch (e) {
+    return { success: false, error: "Invalid server response" };
+  }
   if (response.ok && data.access_token) {
     localStorage.setItem("access_token", data.access_token);
     return { success: true, user: data.user };
