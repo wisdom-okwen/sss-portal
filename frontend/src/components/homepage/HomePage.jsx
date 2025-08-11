@@ -3,7 +3,7 @@ import React from "react";
 
 import Box from "@mui/material/Box";
 import NavBar from "../NavBar/NavBar";
-import { Link, Routes, Route } from "react-router-dom";
+import {Routes, Route } from "react-router-dom";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SchoolIcon from '@mui/icons-material/School';
 import PeopleIcon from '@mui/icons-material/People';

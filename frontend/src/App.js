@@ -1,15 +1,27 @@
-import "./App.css";
-import HomePage from "./components/homepage/HomePage";
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import LoginPage from "./components/loginpage/LoginPage";
-import { BrowserRouter } from "react-router-dom";
+import HomePage from "./components/homepage/HomePage";
+
+function RedirectOnLogin() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      navigate("/home", { replace: true });
+    }
+  }, [navigate]);
+  return null;
+}
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
-        {/* <HomePage /> */}
-        <LoginPage />
-      </div>
+      <RedirectOnLogin />
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/home" element={<HomePage />} />
+      </Routes>
     </BrowserRouter>
   );
 }
