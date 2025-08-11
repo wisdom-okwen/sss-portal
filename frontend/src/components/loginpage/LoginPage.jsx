@@ -15,7 +15,11 @@ const LoginPage = () => {
 
   useEffect(() => {
     document.title = "Sign In | SSS-Portal";
-  }, []);
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      navigate("/home", { replace: true });
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
