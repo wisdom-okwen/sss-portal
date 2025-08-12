@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/loginpage/LoginPage";
+import DashBoardLayout from "./components/DashBoardLayout/DashBoardLayout";
 import HomePage from "./components/homepage/HomePage";
 
 function App() {
@@ -8,7 +9,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route
+          path="/home"
+          element={
+            <DashBoardLayout>
+              <HomePage />
+            </DashBoardLayout>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

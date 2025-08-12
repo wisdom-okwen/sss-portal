@@ -17,3 +17,26 @@ export async function login(email, password) {
     return { success: false, error: data.detail || "Login failed" };
   }
 }
+
+export async function getUser() {
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+    return null;
+  }
+  const response = await fetch("/api/auth/me", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    return null;
+  }
+  try {
+    const data = await response.json();
+    return data.user || data;
+  } catch (e) {
+    return null;
+  }
+}
