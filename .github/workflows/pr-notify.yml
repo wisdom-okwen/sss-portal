@@ -12,4 +12,4 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" -d '{
             "text": "New PR: ${{ github.event.pull_request.title }} by ${{ github.event.pull_request.user.login }}\n${{ github.event.pull_request.html_url }}"
-          }' ${{ secrets.TEAMS_WEBHOOK_URL }}
+          }' https://tuftscloud.webhook.office.com/webhookb2/6fc72957-a0a3-441c-abec-92e462aee52c@fbbf6c60-0344-4c29-9459-725685739b19/IncomingWebhook/15a2689f8bcb44b7ad572dcb4705515b/03f30431-ac9d-42fb-bf8a-95e7f945a02d/V2FwxQQmGia8HlX161BiqhY5JEAUXRPFi-nbLgY2zvXzo1
