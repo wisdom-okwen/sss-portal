@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         postgresql-client \
         libpq-dev \
         build-essential \
-        software-properties-common \
         sudo \
         tzdata \
         wget \
