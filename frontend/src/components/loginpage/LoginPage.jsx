@@ -1,42 +1,126 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 import { FaGoogle, FaFacebookF, FaTwitter, FaApple } from 'react-icons/fa';
+import { login } from '../../utils/auth';
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
+// MUI icon for password visibility
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = "Sign In | SSS-Portal";
-  }, []);
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      navigate("/home", { replace: true });
+    }
+  }, [navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email.trim()) {
+      setError("Email is required.");
+      setShowError(true);
+      return;
+    }
+    if (!password) {
+      setError("Password is required.");
+      setShowError(true);
+      return;
+    }
+    setError("");
+    setShowError(false);
+    const result = await login(email, password);
+    if (result.success) {
+      navigate("/home");
+    } else {
+      setError(result.error);
+      setShowError(true);
+    }
+  };
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   return (
     <div className="login-page-split">
       <div className="login-image" />
       <div className="login-form-container">
         <div className="login-card">
+          <Collapse in={showError}>
+            <Alert
+              severity="error"
+              sx={{
+                borderRadius: 2,
+                mb: 2,
+                fontWeight: 500,
+                fontSize: "1rem",
+                boxShadow: "0 2px 8px rgba(33,150,243,0.12)",
+                background: "linear-gradient(90deg, #ffebee 0%, #ffcdd2 100%)",
+                color: "#b71c1c",
+              }}
+              onClose={() => setShowError(false)}
+            >
+              {error}
+            </Alert>
+          </Collapse>
           <h2 className="login-title">Sign In</h2>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="form-group floating-label-group">
               <input
-                type="text"
-                id="username"
-                name="username"
+                type="email"
+                id="email"
+                name="email"
                 required
-                autoComplete="username"
+                autoComplete="email"
                 className="floating-input"
                 placeholder=" "
+                value={email}
+                onChange={e => setEmail(e.target.value)}
               />
-              <label htmlFor="username" className="floating-label">Username</label>
+              <label htmlFor="email" className="floating-label">Email</label>
             </div>
-            <div className="form-group floating-label-group">
+            <div className="form-group floating-label-group" style={{ position: "relative" }}>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 required
                 autoComplete="current-password"
                 className="floating-input"
                 placeholder=" "
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                style={{ paddingRight: "40px" }}
               />
               <label htmlFor="password" className="floating-label">Password</label>
+              <IconButton
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={handleClickShowPassword}
+                edge="end"
+                size="small"
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  zIndex: 2,
+                  color: "#888"
+                }}
+                tabIndex={-1}
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
             </div>
             <div className="login-options">
               <label className="remember-me">

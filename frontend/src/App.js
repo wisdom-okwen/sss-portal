@@ -1,15 +1,23 @@
-import "./App.css";
-import HomePage from "./components/homepage/HomePage";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/loginpage/LoginPage";
-import { BrowserRouter } from "react-router-dom";
+import DashBoardLayout from "./components/DashBoardLayout/DashBoardLayout";
+import HomePage from "./components/homepage/HomePage";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
-        {/* <HomePage /> */}
-        <LoginPage />
-      </div>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route
+          path="/home"
+          element={
+            <DashBoardLayout>
+              <HomePage />
+            </DashBoardLayout>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }

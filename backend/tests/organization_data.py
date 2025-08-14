@@ -16,10 +16,10 @@ debate = Organization(
     slug="debate_club",
     description="A club for debating various topics.",
     organization_type=OrganizationType.academic,
-    members=[wisdom.id, prince.id, evan.id, amy.id],
-    admin_members=[prince.id, wisdom.id, armstrong.id, samuel.id],
-    teachers=[samuel.id],
-    advisor=armstrong.id,
+    members=[],
+    admin_members=[],
+    teachers=[],
+    advisor=None,
 )
 
 science_and_math = Organization(
@@ -28,10 +28,10 @@ science_and_math = Organization(
     slug="smc",
     description="A club for science enthusiasts.",
     organization_type=OrganizationType.academic,
-    members=[wisdom.id, prince.id],
-    admin_members=[prince.id, armstrong.id, samuel.id],
-    teachers=[armstrong.id],
-    advisor=samuel.id,
+    members=[],
+    admin_members=[],
+    teachers=[],
+    advisor=None,
 )
 
 scripture_union = Organization(
@@ -40,10 +40,10 @@ scripture_union = Organization(
     slug="su",
     description="A club for scripture study and discussion.",
     organization_type=OrganizationType.religious,
-    members=[prince.id, evan.id, amy.id],
-    admin_members=[armstrong.id, samuel.id],
-    teachers=[samuel.id],
-    advisor=armstrong.id,
+    members=[],
+    admin_members=[],
+    teachers=[],
+    advisor=None,
 )
 
 robotics = Organization(
@@ -55,7 +55,7 @@ robotics = Organization(
     members=[],
     admin_members=[],
     teachers=[],
-    advisor=samuel.id,
+    advisor=None,
 )
 
 basketball = Organization(
@@ -64,10 +64,10 @@ basketball = Organization(
     slug="basketball_team",
     description="A team for basketball players.",
     organization_type=OrganizationType.sports,
-    members=[wisdom.id, prince.id, evan.id],
-    admin_members=[armstrong.id, samuel.id],
+    members=[],
+    admin_members=[],
     teachers=[],
-    advisor=armstrong.id,
+    advisor=None,
 )
 
 
@@ -80,7 +80,7 @@ acapella = Organization(
     members=[],
     admin_members=[],
     teachers=[],
-    advisor=samuel.id,
+    advisor=None,
 )
 
 school_choir = Organization(
@@ -92,7 +92,7 @@ school_choir = Organization(
     members=[],
     admin_members=[],
     teachers=[],
-    advisor=armstrong.id,
+    advisor=None,
 )
 
 organizations = [
